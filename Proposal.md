@@ -80,7 +80,7 @@ From the figures presented above, we can see that mental disorders are influence
 
 ![](./img/24.png)
 
-![](./img/25.png)
+![](./img/stress.png)
 
 ![](./img/26.png)
 
