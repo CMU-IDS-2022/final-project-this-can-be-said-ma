@@ -74,6 +74,14 @@ People who spend more time on social media per day have more stress and anxiety.
 People who have mental disorders are more prone to have sleep disorders.
 From the figures presented above, we can see that mental disorders are influenced by many factors. To be more specific, stress as one of the mental disorders that are related to different aspects of life, we plan to analyze the stress origin of an individual from a broad perspective and provide corresponding tips.
 
+![](./img/22.png)
+![](./img/23.png)
+![](./img/24.png)
+![](./img/25.png)
+![](./img/26.png)
+
+We can figure that people most of the people seek a therapy when they have panic attacks. But only a small portion of people with depression, anxiety and stress go to therapy. We want to encourage people with mental disorders seek appropriate therapy when they are not feeling very well through our project.
+
 **What are the factors that correlate with stress level and how are they related?**
 
 We will use the dataset to explore how the covid 19 pandemic is correlated with stress level. 
