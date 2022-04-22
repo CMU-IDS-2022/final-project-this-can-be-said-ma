@@ -70,7 +70,11 @@ if factor == "gender":
 elif factor == "age":
    plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type", "Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
 elif factor == "marital":
+<<<<<<< HEAD
    plot("Mental disorder distribution among different  marital status groups", mental_df, "Mental disorder type", "Number of interviewees", 'marital', ['single', 'marital', 'divorced', 'separated'])
+=======
+   plot("Mental disorder distribution among different marital status groups", mental_df, "Mental disorder type", "Number of interviewees", factor, ['single', 'marital', 'divorced', 'separated'])
+>>>>>>> d4a33aa03c4d61be7bbb6851eb03920877edaa89
 elif factor ==  "income":
    plot("Mental disorder distribution among different income level groups", mental_df, "Mental disorder type", "Number of interviewees", 'income', ['<10', '<20', '<30', '30+', '50+'])
 elif factor ==  "loan":
