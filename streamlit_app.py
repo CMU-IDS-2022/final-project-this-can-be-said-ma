@@ -7,6 +7,23 @@ from PIL import Image
 
 st.title("Stress Analysis: Narrative of stress that enhances people’s understanding of it")
 
+st.markdown("Stress is defined as a reaction to mental or emotional pressure. It is probably \
+one of the commonly experienced feelings, but it might be hard to share. Stress can be caused by a \
+variety of sources includes uncertain future, discrimination, etc., and the coronavirus pandemic \
+has risen as a substantial source of stress. People from different age and/or socioeconomic \
+groups may experience very different sources and symptoms of stress. In this project, we hope to bring \
+a narrative of stress that enhances people’s understanding of it.")
+
+st.subheader('Q1: What are the sources and impact of stress for people from different backgrounds?')
+st.markdown("We will use the Kaggle dataset *Mental Health Checker* collected from a mental health survey for general analysis. \
+The survey consists of 36 questions and has 207 interviewees. Here are the 36 questions of the survey.")
+image = Image.open('img/1.png')
+st.image(image)
+
+st.markdown("First, let's explore whether stress level has specific relationships with gender, \
+age, marital status, income level, loan, time spent in social media a day or sleep disorder. Please select the \
+factors you are interested in and analyze the bar charts.")
+
 st.sidebar.title("待填入Stress Data Analysis: To have an in-depth understanding of the following questions")
 st.sidebar.markdown("待填入This application is a Streamlit dashboard to enhances people’s understanding of stress")
 
