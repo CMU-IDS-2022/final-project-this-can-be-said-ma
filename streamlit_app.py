@@ -6,8 +6,9 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 
+################################################
 ##########      Helper functions      ##########
-
+################################################
 
 @st.cache  # add caching so we load the data only once
 def load_data():
@@ -54,8 +55,9 @@ def plot(title, df, xlabel, ylabel, column, index):
     c = alt.Chart(plotdata).mark_bar().encode()
     st.altair_chart(c)
 
+################################################
 ##########      Main starts here      ##########
-
+################################################
 
 st.title("Stress Analysis: Narrative of stress that enhances people’s understanding of it")
 
@@ -113,17 +115,17 @@ if selectplot == "Stress & age/backgrounds":
              "Mental disorder type", "Number of interviewees", 'sleep_disorder', ['yes', 'no'])
 
 # Page 2
-if selectplot == "Factors correlate with stress level":
+elif selectplot == "Factors correlate with stress level":
 
     # Stress vs sleep
-    st.markdown("## Sleep")
+    st.subheader("Sleep")
     st.markdown("In this section, we will first delve into the relationship between sleep and stress,\
       and then focus on how to improve sleep quality inorder to reduce stress.")
     stress, sleep = load_sleep_data()
 
 
 # Page 3
-if selectplot == "Stress & social media":
+elif selectplot == "Stress & social media":
     st.subheader(
         'Interactive function to detect the user\'s current stress situation')
     image = Image.open('img/18.png')
@@ -161,10 +163,6 @@ if selectplot == "Stress & social media":
         LABEL_COLUMN = 'label'
         # label_list is the list of labels, i.e. True, False or 0, 1 or 'dog', 'cat'
         label_list = [0, 1]
-
-
-elif selectplot == "Stress & age/backgrounds":
-    st.subheader('...')
 
 
 st.markdown(
