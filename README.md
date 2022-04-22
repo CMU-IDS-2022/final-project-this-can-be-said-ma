@@ -1,6 +1,6 @@
 # CMU Interactive Data Science Final Project
 
-* **Online URL**: TODO
+* **Online URL**: https://share.streamlit.io/cmu-ids-2022/final-project-this-can-be-said-ma/main
 * **Team members**:
   * Contact person: TODO@andrew.cmu.edu
   * TODO@andrew.cmu.edu
