@@ -70,11 +70,7 @@ if factor == "gender":
 elif factor == "age":
    plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type", "Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
 elif factor == "marital":
-<<<<<<< HEAD
    plot("Mental disorder distribution among different  marital status groups", mental_df, "Mental disorder type", "Number of interviewees", 'marital', ['single', 'marital', 'divorced', 'separated'])
-=======
-   plot("Mental disorder distribution among different marital status groups", mental_df, "Mental disorder type", "Number of interviewees", factor, ['single', 'marital', 'divorced', 'separated'])
->>>>>>> d4a33aa03c4d61be7bbb6851eb03920877edaa89
 elif factor ==  "income":
    plot("Mental disorder distribution among different income level groups", mental_df, "Mental disorder type", "Number of interviewees", 'income', ['<10', '<20', '<30', '30+', '50+'])
 elif factor ==  "loan":
@@ -85,8 +81,8 @@ elif factor ==  "sleep disorder":
    plot("Relationship between mental disorder and sleep disorder", mental_df, "Mental disorder type", "Number of interviewees", 'sleep_disorder', ['yes', 'no'])
 
 
-st.sidebar.title("待填入Stress Data Analysis: To have an in-depth understanding of the following questions")
-st.sidebar.markdown("待填入This application is a Streamlit dashboard to enhances people’s understanding of stress")
+st.sidebar.title("Stress Data Analysis: To have an in-depth understanding of the following questions")
+st.sidebar.markdown("This application is a Streamlit dashboard to enhances people’s understanding of stress")
 
 st.sidebar.header("待填入")
 selectplot = st.sidebar.selectbox("待填入Select the question you want to view", ["Stress & age/backgrounds", "Factors correlate with stress level", "Stress & social media"] ,key = "0")
@@ -119,7 +115,7 @@ if selectplot == "Stress & social media":
 
    if title !='Please enter some sentences here...':
       st.write('Your input is: [', title,']')
-      path = '/data/' 
+      path = './data/' 
       # path = '/content/Insight_Stress_Analysis/data/'
       train = pd.read_csv(path + 'dreaddit-train.csv', encoding = "ISO-8859-1")
       test = pd.read_csv(path + 'dreaddit-test.csv', encoding = "ISO-8859-1")
