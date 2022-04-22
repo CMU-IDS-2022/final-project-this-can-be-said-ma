@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 def load_data():
     mental_df = pd.read_csv("data/Mental Health Checker.csv", encoding = "ISO-8859-1")
     mental_df = mental_df[['gender', 'age', 'marital', 'income', 'loan', 'social_media', 'sleep_disorder', 'mental_disorder', 'therapy']]
+    mental_df.mental_disorder.fillna("None", inplace=True)
     return mental_df
 
 
@@ -37,10 +38,10 @@ def plot(title, df, xlabel, ylabel, column, index):
     }, 
     index=index
 )
-    plotdata.plot(kind="bar")
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(xlabel)
+    c = alt.Chart(plotdata).mark_bar().encode()
+    st.altair_chart(c)
+
+
 
 
 
@@ -61,23 +62,23 @@ st.image(image)
 
 st.markdown("First, let's explore whether stress level has specific relationships with gender, \
 age, marital status, income level, loan, time spent in social media a day or sleep disorder. ")
-
+'sleep_disorder'
 mental_df = load_data()
-factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", ["gender", "age", "marital", "income", "loan", "social_media", "Mental disorder type"])
+factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", ["gender", "age", "marital", "income", "loan", "social media", "sleep disorder"])
 if factor == "gender":
-   plot("Mental disorder distribution among different genders", mental_df, "Mental disorder type", "Number of interviewees", factor, ['female', 'male'])
+   plot("Mental disorder distribution among different genders", mental_df, "Mental disorder type", "Number of interviewees", 'gender', ['female', 'male'])
 elif factor == "age":
-   plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type", "Number of interviewees", factor, ['13-19', '20-26', '27-33', '34-44', '45 or more'])
+   plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type", "Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
 elif factor == "marital":
-   plot("Mental disorder distribution among different  marital status groups", mental_df, "Mental disorder type", "Number of interviewees", factor, ['single', 'marital', 'divorced', 'separated'])
+   plot("Mental disorder distribution among different  marital status groups", mental_df, "Mental disorder type", "Number of interviewees", 'marital', ['single', 'marital', 'divorced', 'separated'])
 elif factor ==  "income":
-   plot("Mental disorder distribution among different income level groups", mental_df, "Mental disorder type", "Number of interviewees", factor, ['<10', '<20', '<30', '30+', '50+'])
+   plot("Mental disorder distribution among different income level groups", mental_df, "Mental disorder type", "Number of interviewees", 'income', ['<10', '<20', '<30', '30+', '50+'])
 elif factor ==  "loan":
-   plot("Relationship between mental disorder and loan", mental_df, "Mental disorder type", "Number of interviewees", factor, ['yes', 'no'])
-elif factor ==  "social_media":
-   plot("Mental disorder distribution with time spent on social media per day", mental_df, "Mental disorder type", "Number of interviewees", factor, ['<1 hour', '<2 hours', '<3 hours', '3+ hours'])
-elif factor ==  "Mental disorder type":
-   plot("Relationship between mental disorder and sleep disorder", mental_df, "Mental disorder type", "Number of interviewees", factor, ['yes', 'no'])
+   plot("Relationship between mental disorder and loan", mental_df, "Mental disorder type", "Number of interviewees", 'loan', ['yes', 'no'])
+elif factor ==  "social media":
+   plot("Mental disorder distribution with time spent on social media per day", mental_df, "Mental disorder type", "Number of interviewees", 'social_media', ['<1 hour', '<2 hours', '<3 hours', '3+ hours'])
+elif factor ==  "sleep disorder":
+   plot("Relationship between mental disorder and sleep disorder", mental_df, "Mental disorder type", "Number of interviewees", 'sleep_disorder', ['yes', 'no'])
 
 
 st.sidebar.title("待填入Stress Data Analysis: To have an in-depth understanding of the following questions")
