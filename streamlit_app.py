@@ -93,7 +93,7 @@ if selectplot == "Stress & age/backgrounds":
 
     st.markdown("First, let's explore whether stress level has specific relationships with gender, \
    age, marital status, income level, loan, time spent in social media a day or sleep disorder. ")
-    'sleep_disorder'
+    
     mental_df = load_mental_data()
 
 
