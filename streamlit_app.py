@@ -114,7 +114,7 @@ if selectplot == "Stress & age/backgrounds":
    factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", [
                           "gender", "age", "marital", "income", "loan", "social media", "sleep disorder"])
    if factor == "gender":
-        plot("Mental disorder distribution among different genders", mental_df, "Mental disorder type", "Number of interviewees", 'gender', ['female', 'male'])
+        plot("Mental disorder distribution among different genders", mental_df, "Mental disorder type", "Number of interviewees", 'gender', ['Female', 'Male'])
    elif factor == "age":
         plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type","Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
    elif factor == "marital":
