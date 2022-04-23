@@ -24,7 +24,7 @@ def load_sleep_data():
     return sleep_stress, sleep_data
 
 
-def plot(df, xlabel, ylabel, column, index):
+def plot(title, df, xlabel, ylabel, column, index):
     # plt.clf()
     dfs = []
     for i in range(len(index)):
@@ -56,7 +56,7 @@ def plot(df, xlabel, ylabel, column, index):
          elif j == 4:
             test_df = test_df.append({column: index[i], xlabel: disorder[j], ylabel: N[i]}, ignore_index=True)
 
-    c = alt.Chart(test_df).mark_bar().encode(x=xlabel,y=ylabel,column=column, color=column, tooltip=[ylabel])
+    c = alt.Chart(test_df).mark_bar().encode(alt.X(field=xlabel, sort=index),y=ylabel,column=column, color=column, tooltip=[ylabel]).properties(title=title)
     st.altair_chart(c)
 
 ################################################
@@ -100,19 +100,19 @@ if selectplot == "Stress & age/backgrounds":
     factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", [
                           "gender", "age", "marital", "income", "loan", "social media", "sleep disorder"])
     if factor == "gender":
-        plot(mental_df, "Mental disorder type", "Number of interviewees", 'gender', ['female', 'male'])
+        plot("Mental disorder distribution among different genders", mental_df, "Mental disorder type", "Number of interviewees", 'gender', ['female', 'male'])
     elif factor == "age":
-        plot(mental_df, "Mental disorder type","Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
+        plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type","Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
     elif factor == "marital":
-        plot(mental_df, "Mental disorder type", "Number of interviewees", 'marital', ['single', 'marital', 'divorced', 'separated'])
+        plot("Mental disorder distribution among different  marital status groups", mental_df, "Mental disorder type", "Number of interviewees", 'marital', ['single', 'marital', 'divorced', 'separated'])
     elif factor == "income":
-        plot(mental_df, "Mental disorder type", "Number of interviewees", 'income', ['<10', '<20', '<30', '30+', '50+'])
+        plot("Mental disorder distribution among different income level groups", mental_df, "Mental disorder type", "Number of interviewees", 'income', ['<10', '<20', '<30', '30+', '50+'])
     elif factor == "loan":
-        plot(mental_df, "Mental disorder type", "Number of interviewees", 'loan', ['yes', 'no'])
+        plot("Relationship between mental disorder and loan", mental_df, "Mental disorder type", "Number of interviewees", 'loan', ['yes', 'no'])
     elif factor == "social media":
-        plot(mental_df, "Mental disorder type","Number of interviewees", 'social_media', ['<1 hour', '<2 hours', '<3 hours', '3+ hours'])
+        plot("Mental disorder distribution with time spent on social media per day", mental_df, "Mental disorder type","Number of interviewees", 'social_media', ['<1 hour', '<2 hours', '<3 hours', '3+ hours'])
     elif factor == "sleep disorder":
-        plot(mental_df, "Mental disorder type", "Number of interviewees", 'sleep_disorder', ['yes', 'no'])
+        plot("Relationship between mental disorder and sleep disorder", mental_df, "Mental disorder type", "Number of interviewees", 'sleep_disorder', ['yes', 'no'])
 
 # Page 2
 elif selectplot == "Factors correlate with stress level":
