@@ -353,7 +353,7 @@ elif selectplot == "Factors correlate with stress level":
         alt.Y("Sleep quality", scale=alt.Scale(zero=False)),
         tooltip=["hours(End):T", "Sleep quality"],
         color=alt.condition(sleep_selection, alt.value(
-            "orange"), alt.value("gray"))
+            "#aa33cc"), alt.value("gray"))
     ).properties(
         width=240,
         height=180
@@ -364,7 +364,7 @@ elif selectplot == "Factors correlate with stress level":
         alt.Y("Sleep quality", scale=alt.Scale(zero=False)),
         tooltip=["Heart rate", "Sleep quality"],
         color=alt.condition(sleep_selection, alt.value(
-            "orange"), alt.value("gray"))
+            "#ff86c2"), alt.value("gray"))
     ).properties(
         width=240,
         height=180
@@ -375,7 +375,7 @@ elif selectplot == "Factors correlate with stress level":
         alt.Y("Sleep quality", scale=alt.Scale(zero=False)),
         tooltip=["Activity (steps)", "Sleep quality"],
         color=alt.condition(sleep_selection, alt.value(
-            "orange"), alt.value("gray"))
+            "green"), alt.value("gray"))
     ).properties(
         width=240,
         height=180
