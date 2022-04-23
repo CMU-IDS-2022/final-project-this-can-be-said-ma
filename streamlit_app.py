@@ -56,7 +56,7 @@ def plot(title, df, xlabel, ylabel, column, index):
          elif j == 4:
             test_df = test_df.append({column: index[i], xlabel: disorder[j], ylabel: N[i]}, ignore_index=True)
 
-    c = alt.Chart(test_df).mark_bar().encode(alt.X(field=xlabel, sort=index),y=ylabel,column=column, color=column, tooltip=[ylabel]).properties(title=title)
+    c = alt.Chart(test_df).mark_bar().encode(x=xlabel,y=ylabel,column=alt.Column(column, sort = index), color=column, tooltip=[ylabel]).properties(title=title)
     st.altair_chart(c)
 
 ################################################
