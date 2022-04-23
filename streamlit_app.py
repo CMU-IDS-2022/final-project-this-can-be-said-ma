@@ -90,44 +90,46 @@ selectplot = st.sidebar.selectbox("待填入Select the question you want to view
 
 # Page 1
 if selectplot == "Stress & age/backgrounds":
-    st.markdown("Stress is defined as a reaction to mental or emotional pressure. It is probably \
+   st.markdown("Stress is defined as a reaction to mental or emotional pressure. It is probably \
    one of the commonly experienced feelings, but it might be hard to share. Stress can be caused by a \
    variety of sources includes uncertain future, discrimination, etc., and the coronavirus pandemic \
    has risen as a substantial source of stress. People from different age and/or socioeconomic \
    groups may experience very different sources and symptoms of stress. In this project, we hope to bring \
    a narrative of stress that enhances people’s understanding of it.")
 
-    st.subheader(
+   st.subheader(
         'Q1: What are the sources and impact of stress for people from different backgrounds?')
-    st.markdown("We will use the Kaggle dataset *Mental Health Checker* collected from a mental health survey for general analysis. \
+   st.markdown("We will use the Kaggle dataset *Mental Health Checker* collected from a mental health survey for general analysis. \
    The survey consists of 36 questions and has 207 interviewees. Here are the 36 questions of the survey.")
-    image = Image.open('img/1.png')
-    st.image(image)
+   image = Image.open('img/1.png')
+   st.image(image)
 
 
-    st.markdown("First, let's explore whether stress level has specific relationships with gender, \
+   st.markdown("First, let's explore whether stress level has specific relationships with gender, \
    age, marital status, income level, loan, time spent in social media a day or sleep disorder. ")
     
-    mental_df = load_mental_data()
+   mental_df = load_mental_data()
 
 
-    factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", [
+   factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", [
                           "gender", "age", "marital", "income", "loan", "social media", "sleep disorder"])
-    if factor == "gender":
+   if factor == "gender":
         plot("Mental disorder distribution among different genders", mental_df, "Mental disorder type", "Number of interviewees", 'gender', ['female', 'male'])
-    elif factor == "age":
+   elif factor == "age":
         plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type","Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
-    elif factor == "marital":
+   elif factor == "marital":
         plot("Mental disorder distribution among different  marital status groups", mental_df, "Mental disorder type", "Number of interviewees", 'marital', ['single', 'marital', 'divorced', 'separated'])
-    elif factor == "income":
+   elif factor == "income":
         plot("Mental disorder distribution among different income level groups", mental_df, "Mental disorder type", "Number of interviewees", 'income', ['<10', '<20', '<30', '30+', '50+'])
-    elif factor == "loan":
+   elif factor == "loan":
         plot("Relationship between mental disorder and loan", mental_df, "Mental disorder type", "Number of interviewees", 'loan', ['yes', 'no'])
-    elif factor == "social media":
+   elif factor == "social media":
         plot("Mental disorder distribution with time spent on social media per day", mental_df, "Mental disorder type","Number of interviewees", 'social_media', ['<1 hour', '<2 hours', '<3 hours', '3+ hours'])
-    elif factor == "sleep disorder":
+   elif factor == "sleep disorder":
         plot("Relationship between mental disorder and sleep disorder", mental_df, "Mental disorder type", "Number of interviewees", 'sleep_disorder', ['yes', 'no'])
 
+
+   st.markdown("Next, let's visualize the percentage of people seeking therapy with different mental disorder levels.")
 # Page 2
 elif selectplot == "Factors correlate with stress level":
 
