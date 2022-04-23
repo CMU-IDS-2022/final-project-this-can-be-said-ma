@@ -2,10 +2,10 @@
 
 * **Online URL**: https://share.streamlit.io/cmu-ids-2022/final-project-this-can-be-said-ma/main
 * **Team members**:
-  * Contact person: TODO@andrew.cmu.edu
-  * TODO@andrew.cmu.edu
-  * TODO@andrew.cmu.edu
-  * TODO@andrew.cmu.edu
+  * Contact person: jiuzhiy@andrew.cmu.edu
+  * wenxingd@andrew.cmu.edu
+  * huiyiz@andrew.cmu.edu
+  * szhou2O@andrew.cmu.edu
 
 ## Work distribution
 
