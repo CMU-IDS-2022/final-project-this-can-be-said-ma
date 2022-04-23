@@ -25,7 +25,6 @@ def load_sleep_data():
 
 
 def plot(title, df, xlabel, ylabel, column, index):
-    # plt.clf()
     dfs = []
     for i in range(len(index)):
         dfs.append(df[df[column] == index[i]])
@@ -58,6 +57,21 @@ def plot(title, df, xlabel, ylabel, column, index):
 
     c = alt.Chart(test_df).mark_bar().encode(x=xlabel,y=ylabel,column=alt.Column(column, sort = index), color=alt.Column(column, sort = index), tooltip=[ylabel]).properties(title=title)
     st.altair_chart(c)
+
+def prepare_pie(df):
+   index=["Panic attack", "depression", "anxiety", 'stress']
+   dfs = []
+   for i in range(len(index)):
+      dfs.append(df[df["mental_disorder"] == index[i]])
+   dfs.append(df[(df["mental_disorder"] != index[0]) & (df["mental_disorder"] != index[1]) & (df["mental_disorder"] != index[2]) & (df["mental_disorder"] != index[3])])
+   P, D, S, A, N = [0] * 2, [0] * 2, [0] * 2, [0] * 2, [0] * 2
+   therapy = ['yes', 'no']
+   for i in range(2):
+      P[i] = len(dfs[0][dfs[0]["therapy"] == therapy[i]])
+      D[i] = len(dfs[1][dfs[1]["therapy"] == therapy[i]])
+      S[i] = len(dfs[2][dfs[2]["therapy"] == therapy[i]])
+      A[i] = len(dfs[3][dfs[3]["therapy"] == therapy[i]])
+      N[i] = len(dfs[4][dfs[4]["therapy"] == therapy[i]])
 
 ################################################
 ##########      Main starts here      ##########
