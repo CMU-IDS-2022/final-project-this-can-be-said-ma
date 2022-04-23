@@ -5,7 +5,7 @@
   * Contact person: jiuzhiy@andrew.cmu.edu
   * wenxingd@andrew.cmu.edu
   * huiyiz@andrew.cmu.edu
-  * szhou2O@andrew.cmu.edu
+  * szhou2@andrew.cmu.edu
 
 ## Work distribution
 
