@@ -130,6 +130,8 @@ if selectplot == "Stress & age/backgrounds":
 
 
    st.markdown("Next, let's visualize the percentage of people seeking therapy with different mental disorder levels.")
+
+
 # Page 2
 elif selectplot == "Factors correlate with stress level":
 
