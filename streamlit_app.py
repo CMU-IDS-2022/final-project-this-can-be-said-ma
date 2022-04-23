@@ -1,7 +1,16 @@
+from attr import attr
+from numpy import character
 import streamlit as st
 import pandas as pd
 import altair as alt
 from PIL import Image
+
+################################################
+##########      Global attributes     ##########
+################################################
+
+stress_sleep_attrs = ["snoring rate", "respiration rate", "body temperature", "limb movement", "body oxygen", "eye movement", "sleeping hours", "heart rate"]
+
 
 ################################################
 ##########      Helper functions      ##########
@@ -52,9 +61,27 @@ def plot(title, df, xlabel, ylabel, column, index):
     c = alt.Chart(plotdata).mark_bar().encode()
     st.altair_chart(c)
 
+
+def gen_stress_sleep_chart(attrs):
+    chart_list = []
+    for attr in attrs:
+        chart_list.append(
+            alt.Chart(stress).mark_bar().encode(
+                alt.X(attr, scale=alt.Scale(
+                    zero=False), bin=alt.Bin()),
+                alt.Y("count()"),
+                alt.Color("stress level")
+            ).properties(
+                width=280,
+                height=210
+            )
+        )
+    return chart_list
+
 ################################################
 ##########      Main starts here      ##########
 ################################################
+
 
 st.title("Stress Analysis: Narrative of stress that enhances people’s understanding of it")
 
@@ -119,6 +146,30 @@ elif selectplot == "Factors correlate with stress level":
     st.markdown("In this section, we will first delve into the relationship between sleep and stress,\
       and then focus on how to improve sleep quality inorder to reduce stress.")
     stress, sleep = load_sleep_data()
+    st.write(stress)
+    st.write(sleep)
+
+    # Stress data
+    attrs = st.multiselect("Choose the attributes:", stress_sleep_attrs, default=["sleeping hours", "snoring rate"])
+
+    chart_list = gen_stress_sleep_chart(attrs)
+
+    concated_chart = None
+
+    for i in range(0, len(attrs), 2):
+        cur_chart = None
+        if i + 1 >= len(attrs):
+            cur_chart = chart_list[i]
+        else:
+            cur_chart = alt.hconcat(chart_list[i], chart_list[i + 1])
+        if concated_chart is None:
+            concated_chart = cur_chart
+        else:
+            concated_chart = alt.vconcat(concated_chart, cur_chart)
+    
+    st.write(concated_chart)
+
+    # Sleep data
 
 
 # Page 3
