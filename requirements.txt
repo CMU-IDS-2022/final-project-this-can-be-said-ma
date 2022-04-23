@@ -1,5 +1,5 @@
 streamlit
 pandas
 altair
-vega_datasets
+numpy
 tensorflow==1.15.0
