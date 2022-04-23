@@ -8,7 +8,7 @@ from PIL import Image
 ################################################
 
 @st.cache  # add caching so we load the data only once
-def load_data():
+def load_mental_data():
     mental_df = pd.read_csv(
         "data/Mental Health Checker.csv", encoding="ISO-8859-1")
     mental_df = mental_df[['gender', 'age', 'marital', 'income', 'loan',
@@ -31,7 +31,7 @@ def plot(title, df, xlabel, ylabel, column, index):
         dfs.append(df[df[column] == index[i]])
     P, D, S, A, N = [0] * len(index), [0] * len(index), [0] * \
         len(index), [0] * len(index), [0] * len(index)
-    disorder = ['Panic attack', 'depression', 'stress', 'anxiety']
+    disorder = ['Panic attack', 'depression', 'stress', 'anxiety', "None"]
     for i in range(len(index)):
         P[i] = len(dfs[i][dfs[i]["mental_disorder"] == disorder[0]])
         D[i] = len(dfs[i][dfs[i]["mental_disorder"] == disorder[1]])
@@ -40,16 +40,24 @@ def plot(title, df, xlabel, ylabel, column, index):
         # N[i] = len(df[df[column] == index[i]]["mental_disorder"] == disorder[i])
     for i in range(len(index)):
         N[i] = len(df[df[column] == index[i]]) - P[i] - D[i] - S[i] - A[i]
-    plotdata = pd.DataFrame({
-        "Panic attack": P,
-        "Depression": D,
-        "Stress": S,
-        "Anxiety": A,
-        "N/A": N
-    },
-        index=index
-    )
-    c = alt.Chart(plotdata).mark_bar().encode()
+
+    test_df = pd.DataFrame(columns=[column, "mental disorder type", "number of people"])
+
+    for i in range(len(index)):
+      for j in range(5):
+         if j == 0:
+            test_df = test_df.append({column: index[i], "mental disorder type": disorder[j], "number of people": P[i]}, ignore_index=True)
+         elif j == 1:
+            test_df = test_df.append({column: index[i], "mental disorder type": disorder[j], "number of people": D[i]}, ignore_index=True)
+         elif j == 2:
+            test_df = test_df.append({column: index[i], "mental disorder type": disorder[j], "number of people": S[i]}, ignore_index=True)
+         elif j == 3:
+            test_df = test_df.append({column: index[i], "mental disorder type": disorder[j], "number of people": A[i]}, ignore_index=True)
+         elif j == 4:
+            test_df = test_df.append({column: index[i], "mental disorder type": disorder[j], "number of people": N[i]}, ignore_index=True)
+
+
+    c = alt.Chart(test_df).mark_bar().encode(x="mental disorder type",y='number of people',column=column, color=column, tooltip=['number of people'])
     st.altair_chart(c)
 
 ################################################
@@ -86,7 +94,7 @@ if selectplot == "Stress & age/backgrounds":
     st.markdown("First, let's explore whether stress level has specific relationships with gender, \
    age, marital status, income level, loan, time spent in social media a day or sleep disorder. ")
     'sleep_disorder'
-    mental_df = load_data()
+    mental_df = load_mental_data()
     factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", [
                           "gender", "age", "marital", "income", "loan", "social media", "sleep disorder"])
     if factor == "gender":
