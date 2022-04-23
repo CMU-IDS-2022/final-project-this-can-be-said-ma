@@ -17,8 +17,9 @@ stress_sleep_attrs = ["snoring rate", "respiration rate", "body temperature",
 ##########      Helper functions      ##########
 ################################################
 
+
 @st.cache  # add caching so we load the data only once
-def load_data():
+def load_mental_data():
     mental_df = pd.read_csv(
         "data/Mental Health Checker.csv", encoding="ISO-8859-1")
     mental_df = mental_df[['gender', 'age', 'marital', 'income', 'loan',
@@ -39,13 +40,12 @@ def load_sleep_data():
 
 
 def plot(title, df, xlabel, ylabel, column, index):
-    # plt.clf()
     dfs = []
     for i in range(len(index)):
         dfs.append(df[df[column] == index[i]])
     P, D, S, A, N = [0] * len(index), [0] * len(index), [0] * \
         len(index), [0] * len(index), [0] * len(index)
-    disorder = ['Panic attack', 'depression', 'stress', 'anxiety']
+    disorder = ['Panic attack', 'depression', 'stress', 'anxiety', "None"]
     for i in range(len(index)):
         P[i] = len(dfs[i][dfs[i]["mental_disorder"] == disorder[0]])
         D[i] = len(dfs[i][dfs[i]["mental_disorder"] == disorder[1]])
@@ -54,18 +54,65 @@ def plot(title, df, xlabel, ylabel, column, index):
         # N[i] = len(df[df[column] == index[i]]["mental_disorder"] == disorder[i])
     for i in range(len(index)):
         N[i] = len(df[df[column] == index[i]]) - P[i] - D[i] - S[i] - A[i]
-    plotdata = pd.DataFrame({
-        "Panic attack": P,
-        "Depression": D,
-        "Stress": S,
-        "Anxiety": A,
-        "N/A": N
-    },
-        index=index
-    )
-    c = alt.Chart(plotdata).mark_bar().encode()
+
+    test_df = pd.DataFrame(columns=[column, xlabel, ylabel])
+
+    for i in range(len(index)):
+        for j in range(5):
+            if j == 0:
+                test_df = test_df.append(
+                    {column: index[i], xlabel: disorder[j], ylabel: P[i]}, ignore_index=True)
+            elif j == 1:
+                test_df = test_df.append(
+                    {column: index[i], xlabel: disorder[j], ylabel: D[i]}, ignore_index=True)
+            elif j == 2:
+                test_df = test_df.append(
+                    {column: index[i], xlabel: disorder[j], ylabel: S[i]}, ignore_index=True)
+            elif j == 3:
+                test_df = test_df.append(
+                    {column: index[i], xlabel: disorder[j], ylabel: A[i]}, ignore_index=True)
+            elif j == 4:
+                test_df = test_df.append(
+                    {column: index[i], xlabel: disorder[j], ylabel: N[i]}, ignore_index=True)
+
+    c = alt.Chart(test_df).mark_bar().encode(x=xlabel, y=ylabel, column=alt.Column(
+        column, sort=index), color=alt.Column(column, sort=index), tooltip=[ylabel]).properties(title=title)
     st.altair_chart(c)
 
+def plot_pie(df, disorder):
+    index = ["Panic attack", "depression", "anxiety", 'stress']
+    dfs = []
+    for i in range(len(index)):
+        dfs.append(df[df["mental_disorder"] == index[i]])
+    dfs.append(df[(df["mental_disorder"] != index[0]) & (df["mental_disorder"] != index[1]) & (
+        df["mental_disorder"] != index[2]) & (df["mental_disorder"] != index[3])])
+    P, D, S, A, N = [0] * 2, [0] * 2, [0] * 2, [0] * 2, [0] * 2
+    therapy = ['no', 'yes']
+    for i in range(2):
+        P[i] = len(dfs[0][dfs[0]["therapy"] == therapy[i]])
+        D[i] = len(dfs[1][dfs[1]["therapy"] == therapy[i]])
+        S[i] = len(dfs[2][dfs[2]["therapy"] == therapy[i]])
+        A[i] = len(dfs[3][dfs[3]["therapy"] == therapy[i]])
+        N[i] = len(dfs[4][dfs[4]["therapy"] == therapy[i]])
+    if disorder == "Panic attack":
+        source = pd.DataFrame({"category": ['no', 'yes'], "value": P})
+        title = "Percentage of people seeking therapy who have panic attack"
+    elif disorder == "Depression":
+        source = pd.DataFrame({"category": ['no', 'yes'], "value": D})
+        title = "Percentage of people seeking therapy who have depression"
+    elif disorder == "Anxiety":
+        source = pd.DataFrame({"category": ['no', 'yes'], "value": A})
+        title = "Percentage of people seeking therapy who have anxiety"
+    elif disorder == "Stress":
+        source = pd.DataFrame({"category": ['no', 'yes'], "value": S})
+        title = "Percentage of people seeking therapy who have stress"
+    elif disorder == "No mental disorder":
+        source = pd.DataFrame({"category": ['no', 'yes'], "value": N})
+        title = "Percentage of people seeking therapy who don't have any mental disorders"
+    c = alt.Chart(source).mark_arc().encode(
+        theta=alt.Theta(field="value", type="quantitative"),
+        color=alt.Color(field="category", scale=alt.Scale(scheme='set2')), tooltip=["value"]).properties(title=title)
+    st.altair_chart(c, use_container_width=True)
 
 def gen_stress_sleep_chart(attrs):
     chart_list = []
@@ -111,6 +158,8 @@ def get_sleep_membership(sleep, score_range=None, coffee=None, tea=None, ate_lat
         worked_out = binaryEncodeResponse(worked_out)
         labels &= (sleep['Worked out'].isin(worked_out))
     return labels
+
+
 
 ################################################
 ##########      Main starts here      ##########
@@ -161,13 +210,14 @@ if selectplot == "Stress & age/backgrounds":
 
     st.markdown("First, let's explore whether stress level has specific relationships with gender, \
    age, marital status, income level, loan, time spent in social media a day or sleep disorder. ")
-    'sleep_disorder'
-    mental_df = load_data()
+
+    mental_df = load_mental_data()
+
     factor = st.selectbox("Please select the factors you are interested in and analyze the bar charts.", [
-                          "gender", "age", "marital", "income", "loan", "social media", "sleep disorder"])
+        "gender", "age", "marital", "income", "loan", "social media", "sleep disorder"])
     if factor == "gender":
         plot("Mental disorder distribution among different genders", mental_df,
-             "Mental disorder type", "Number of interviewees", 'gender', ['female', 'male'])
+             "Mental disorder type", "Number of interviewees", 'gender', ['Female', 'Male'])
     elif factor == "age":
         plot("Mental disorder distribution among different age groups", mental_df, "Mental disorder type",
              "Number of interviewees", 'age', ['13-19', '20-26', '27-33', '34-44', '45 or more'])
@@ -186,6 +236,16 @@ if selectplot == "Stress & age/backgrounds":
     elif factor == "sleep disorder":
         plot("Relationship between mental disorder and sleep disorder", mental_df,
              "Mental disorder type", "Number of interviewees", 'sleep_disorder', ['yes', 'no'])
+
+    st.markdown(
+        "Next, let's visualize the percentage of people seeking therapy with different mental disorder levels.")
+    disorder_factor = st.selectbox("Please select the mental disorder levels you want to explore further.", [
+        "Panic attack", "Depression", "Anxiety", 'Stress', "No mental disorder"])
+    plot_pie(mental_df, disorder_factor)
+    st.markdown("We can figure that people most of the people seek a therapy when they have panic attacks. \
+      But only a small portion of people with depression, anxiety and stress go to therapy. We want to encourage \
+      people with mental disorders seek appropriate therapy when they are not feeling very well through our project.")
+
 
 # Page 2
 elif selectplot == "Factors correlate with stress level":
@@ -364,11 +424,6 @@ elif selectplot == "Stress & social media":
     st.sidebar.markdown(
         "##### Dataset: Dreaddit: A Reddit Dataset for Stress Analysis in Social Media")
 
-    # @st.cache(persist = True, allow_output_mutation=True)
-    # def load_data():
-    #    data = pd.read_csv(DATA_URL)
-    #    return data
-    # data = load_data()
     st.subheader(
         'Would you like to know your stress level? Please enter some sentences')
     title = st.text_area(label='', value='Please enter some sentences here...')
@@ -383,7 +438,32 @@ elif selectplot == "Stress & social media":
         LABEL_COLUMN = 'label'
         # label_list is the list of labels, i.e. True, False or 0, 1 or 'dog', 'cat'
         label_list = [0, 1]
-
-
+        select = st.selectbox("What's your age", [
+            "6-17", "18-49", "50+"], key="1")
+        if select == "6-17":
+            st.markdown("#### We have some tips for you")
+            st.markdown("**Sleep well.** Sleep is essential for physical and emotional well-being. For children under 12 years old, they need 9 to 12 hours of sleep a night. Teens need 8 to 10 hours a night.")
+            st.markdown(
+                "**Exercise.** Physical activity is an essential stress reliever. At least 60 minutes a day of activity for children ages 6 to 17.")
+            st.markdown("**Talk it out.** Talking about stressful situations with a trusted adult can help kids and teens put things in perspective and find solutions. Parents can help them combat negative thinking, remind them of times they worked hard and improved.")
+            st.markdown("**Get outside.** Spending time in nature is an effective way to relieve stress and improve overall well-being. Researchers have found that people who live in areas with more green space have less depression, anxiety and stress.")
+            st.markdown(
+                "**Diet.** We recommend kids and teens eat an abundance of vegetables, fish, nuts and eggs.")
+        elif select == "18-49":
+            st.markdown("#### We have some tips for you")
+            st.markdown("**Spend less time on social media.**Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
+            st.markdown(
+                "**Manage your time..** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
+            st.markdown("**Having a balanced and healthy diet.** Making simple diet changes, such as reducing your alcohol, caffeine and sugar intake.")
+            st.markdown(
+                "**Share your feelings.** A conversation with a friend lets you know that you are not the only one having a bad day, caring for a sick child or working in a busy office. Stay in touch with friends and family. Let them provide love, support and guidance. Don’t try to cope alone.")
+        else:
+            st.markdown("#### We have some tips for you")
+            st.markdown("**Regular aerobic exercise.** Taking 40-minute walks three days per week will result in a 2% increase in the size of their hippocampus, the area of the brain involved in memory and learning. In contrast, without exercise, older adults can expect to see a decrease in the size of their hippocampus by about 1-2% each year.")
+            st.markdown(
+                "**Exercise.** Physical activity is an essential stress reliever. At least 60 minutes a day of activity for children ages 6 to 17.")
+            st.markdown("**Become active within your community and cultivate warm relationships.** You can choose to volunteer at a local organization, like a youth center, food bank, or animal shelter.")
+            st.markdown("**Diet.** Recommended diets include an abundance of vegetables, fish, meat, poultry, nuts, eggs and salads. Olders should avoid sugar, overconsumption of sugar has a direct correlation to obesity, diabetes, disease and even death.")
+            
 st.markdown(
     "This project was created by Wenxing Deng, Jiuzhi Yu, Siyu Zhou and Huiyi Zhang for the [Interactive Data Science](https://dig.cmu.edu/ids2022) course at [Carnegie Mellon University](https://www.cmu.edu).")
