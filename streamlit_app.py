@@ -375,7 +375,7 @@ elif selectplot == "Factors correlate with stress level":
         alt.Y("Sleep quality", scale=alt.Scale(zero=False)),
         tooltip=["Activity (steps)", "Sleep quality"],
         color=alt.condition(sleep_selection, alt.value(
-            "green"), alt.value("gray"))
+            "#50c878"), alt.value("gray"))
     ).properties(
         width=240,
         height=180
