@@ -65,7 +65,7 @@ def plot_pie(df, disorder):
       dfs.append(df[df["mental_disorder"] == index[i]])
    dfs.append(df[(df["mental_disorder"] != index[0]) & (df["mental_disorder"] != index[1]) & (df["mental_disorder"] != index[2]) & (df["mental_disorder"] != index[3])])
    P, D, S, A, N = [0] * 2, [0] * 2, [0] * 2, [0] * 2, [0] * 2
-   therapy = ['yes', 'no']
+   therapy = ['no', 'yes']
    for i in range(2):
       P[i] = len(dfs[0][dfs[0]["therapy"] == therapy[i]])
       D[i] = len(dfs[1][dfs[1]["therapy"] == therapy[i]])
@@ -73,23 +73,23 @@ def plot_pie(df, disorder):
       A[i] = len(dfs[3][dfs[3]["therapy"] == therapy[i]])
       N[i] = len(dfs[4][dfs[4]["therapy"] == therapy[i]])
    if disorder == "Panic attack":
-      source = pd.DataFrame({"category": ["yes", "no"], "value": P})
+      source = pd.DataFrame({"category": ['no', 'yes'], "value": P})
       title = "Percentage of people seeking therapy who have panic attack"
    elif disorder == "Depression":
-      source = pd.DataFrame({"category": ["yes", "no"], "value": D})
+      source = pd.DataFrame({"category": ['no', 'yes'], "value": D})
       title = "Percentage of people seeking therapy who have depression"
    elif disorder == "Anxiety":
-      source = pd.DataFrame({"category": ["yes", "no"], "value": A})
+      source = pd.DataFrame({"category": ['no', 'yes'], "value": A})
       title = "Percentage of people seeking therapy who have anxiety"
    elif disorder == "Stress":
-      source = pd.DataFrame({"category": ["yes", "no"], "value": S})
+      source = pd.DataFrame({"category": ['no', 'yes'], "value": S})
       title = "Percentage of people seeking therapy who have stress"
    elif disorder == "No mental disorder":
-      source = pd.DataFrame({"category": ["yes", "no"], "value": N})
+      source = pd.DataFrame({"category": ['no', 'yes'], "value": N})
       title = "Percentage of people seeking therapy who don't have any mental disorders"    
    c = alt.Chart(source).mark_arc().encode(
     theta=alt.Theta(field="value", type="quantitative"),
-    color=alt.Color(field="category"), tooltip=["value"]).properties(title=title)
+    color=alt.Color(field="category", scale=alt.Scale(scheme='set2')), tooltip=["value"]).properties(title=title)
    st.altair_chart(c, use_container_width=True)
 
 ################################################
@@ -152,6 +152,10 @@ if selectplot == "Stress & age/backgrounds":
    disorder_factor = st.selectbox("Please select the mental disorder levels you want to explore further.", [
                           "Panic attack", "Depression", "Anxiety", 'Stress', "No mental disorder"])
    plot_pie(mental_df, disorder_factor)
+   st.markdown("We can figure that people most of the people seek a therapy when they have panic attacks. \
+      But only a small portion of people with depression, anxiety and stress go to therapy. We want to encourage \
+      people with mental disorders seek appropriate therapy when they are not feeling very well through our project.")
+
 
 # Page 2
 elif selectplot == "Factors correlate with stress level":
