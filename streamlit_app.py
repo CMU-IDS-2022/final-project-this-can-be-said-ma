@@ -187,11 +187,6 @@ elif selectplot == "Stress & social media":
     st.sidebar.markdown(
         "##### Dataset: Dreaddit: A Reddit Dataset for Stress Analysis in Social Media")
 
-    # @st.cache(persist = True, allow_output_mutation=True)
-    # def load_data():
-    #    data = pd.read_csv(DATA_URL)
-    #    return data
-    # data = load_data()
     st.subheader(
         'Would you like to know your stress level? Please enter some sentences')
     title = st.text_area(label='', value='Please enter some sentences here...')
@@ -206,6 +201,12 @@ elif selectplot == "Stress & social media":
         LABEL_COLUMN = 'label'
         # label_list is the list of labels, i.e. True, False or 0, 1 or 'dog', 'cat'
         label_list = [0, 1]
+        select = st.selectbox("What's your age", [
+                          "10-20", "21-35","36-45","46-80"], key="1")
+        if select == "10-20":
+           st.header("待填入")
+
+
 
 
 st.markdown(
