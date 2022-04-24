@@ -320,43 +320,29 @@ elif selectplot == "Factors correlate with stress level":
 
     st.markdown(
         "##### Step 3: Now let's see the sleeping quality distribution.\n\n" +
-        "You can select some data points in \"Start (hours)\" to see other sleep attributes of these people!"
-    )
-    sleep_cols = st.columns(2)
-    with sleep_cols[0]:
-        st.metric("Mean sleep quality", round(sleep_score_range["Sleep quality"].mean(), 2))
-    with sleep_cols[1]:
-        st.metric("Sleep quality std", round(sleep_score_range["Sleep quality"].std(), 2))
-
-    sleep_quality = alt.Chart(sleep_score_range).mark_bar().encode(
-        alt.X("Sleep quality", scale=alt.Scale(zero=False), bin=True),
-        alt.Y("count()"),
-        tooltip=["count()"]
-    ).properties(
-        width=200,
-        height=150
+        "You can select some data points in \"Time in bed\" to see other sleep attributes of these people!"
     )
 
-    time_in_bed = alt.Chart(sleep_score_range).mark_circle(size=10).encode(
+    time_in_bed = alt.Chart(sleep_score_range).mark_circle(size=10).add_selection(sleep_selection).encode(
         alt.X("Time in bed"),
         alt.Y("Sleep quality", scale=alt.Scale(zero=False)),
         tooltip=["Time in bed", "Sleep quality"],
         color=alt.condition(sleep_selection, alt.value(
             "steelblue"), alt.value("gray"))
     ).properties(
-        width=200,
-        height=150
+        width=400,
+        height=300
     )
 
-    start_time = alt.Chart(sleep_score_range).mark_circle(size=10).add_selection(sleep_selection).encode(
+    start_time = alt.Chart(sleep_score_range).mark_circle(size=10).encode(
         alt.X("hours(Start):T"),
         alt.Y("Sleep quality", scale=alt.Scale(zero=False)),
         tooltip=["hours(Start):T", "Sleep quality"],
         color=alt.condition(sleep_selection, alt.value(
             "orange"), alt.value("gray"))
     ).properties(
-        width=200,
-        height=150
+        width=240,
+        height=180
     )
 
     end_time = alt.Chart(sleep_score_range).mark_circle(size=10).encode(
@@ -366,8 +352,8 @@ elif selectplot == "Factors correlate with stress level":
         color=alt.condition(sleep_selection, alt.value(
             "#aa33cc"), alt.value("gray"))
     ).properties(
-        width=200,
-        height=150
+        width=240,
+        height=180
     )
 
     heart_rate = alt.Chart(sleep_score_range).mark_circle(size=10).encode(
@@ -377,8 +363,8 @@ elif selectplot == "Factors correlate with stress level":
         color=alt.condition(sleep_selection, alt.value(
             "#ff86c2"), alt.value("gray"))
     ).properties(
-        width=200,
-        height=150
+        width=240,
+        height=180
     )
 
     step = alt.Chart(sleep_score_range).mark_circle(size=10).encode(
@@ -388,8 +374,8 @@ elif selectplot == "Factors correlate with stress level":
         color=alt.condition(sleep_selection, alt.value(
             "#50c878"), alt.value("gray"))
     ).properties(
-        width=200,
-        height=150
+        width=240,
+        height=180
     )
 
     # coffee = alt.Chart(sleep_score_range).mark_bar(size=10).encode(
@@ -401,7 +387,7 @@ elif selectplot == "Factors correlate with stress level":
     #     height=180
     # )
 
-    st.write((sleep_quality | time_in_bed) & (start_time | end_time) & (heart_rate | step))
+    st.write(time_in_bed & (start_time | end_time) & (heart_rate | step))
 
     st.markdown(
         "#### Summary:\n" +
