@@ -1,17 +1,7 @@
-from attr import attr
-from numpy import character
 import streamlit as st
 import pandas as pd
 import altair as alt
 from PIL import Image
-
-################################################
-##########      Global attributes     ##########
-################################################
-
-stress_sleep_attrs = ["snoring rate", "respiration rate", "body temperature",
-                      "limb movement", "body oxygen", "eye movement", "sleeping hours", "heart rate"]
-
 
 ################################################
 ##########      Helper functions      ##########
@@ -32,10 +22,6 @@ def load_mental_data():
 def load_sleep_data():
     sleep_stress = pd.read_csv("data/sleep_stress.csv")
     sleep_data = pd.read_csv("data/sleep_data_cleaned.csv")
-    sleep_data["Start"] = pd.to_datetime(
-        sleep_data["Start"], format='%H:%M:%S').dt.tz_localize("US/Eastern")
-    sleep_data["End"] = pd.to_datetime(
-        sleep_data["End"], format='%H:%M:%S').dt.tz_localize("US/Eastern")
     return sleep_stress, sleep_data
 
 
@@ -79,6 +65,7 @@ def plot(title, df, xlabel, ylabel, column, index):
         column, sort=index), color=alt.Column(column, sort=index), tooltip=[ylabel]).properties(title=title)
     st.altair_chart(c)
 
+
 def plot_pie(df, disorder):
     index = ["Panic attack", "depression", "anxiety", 'stress']
     dfs = []
@@ -114,83 +101,22 @@ def plot_pie(df, disorder):
         color=alt.Color(field="category", scale=alt.Scale(scheme='set2')), tooltip=["value"]).properties(title=title)
     st.altair_chart(c, use_container_width=True)
 
-def gen_stress_sleep_chart(attrs):
-    chart_list = []
-    for attr in attrs:
-        chart_list.append(
-            alt.Chart(stress).mark_bar().encode(
-                alt.X(attr, scale=alt.Scale(
-                    zero=False), bin=alt.Bin()),
-                alt.Y("count()"),
-                alt.Color("stress level")
-            ).properties(
-                width=280,
-                height=210
-            )
-        )
-    return chart_list
-
-@st.cache
-def binaryEncodeResponse(response):
-    result = []
-    if "Yes" in response:
-        result.append(1)
-    if "No" in response:
-        result.append(0)
-    return result
-
-@st.cache
-def get_sleep_membership(sleep, score_range=None, coffee=None, tea=None, ate_late=None, worked_out=None):
-    labels = pd.Series([1] * len(sleep), index=sleep.index)
-    if score_range:
-        labels &= (sleep['Sleep quality'] >= score_range[0]) & (
-            sleep['Sleep quality'] <= score_range[1])
-    if coffee:
-        coffee = binaryEncodeResponse(coffee)
-        labels &= (sleep['Drank coffee'].isin(coffee))
-    if tea:
-        tea = binaryEncodeResponse(tea)
-        labels &= (sleep['Drank tea'].isin(tea))
-    if ate_late:
-        ate_late = binaryEncodeResponse(ate_late)
-        labels &= (sleep['Ate late'].isin(ate_late))
-    if worked_out:
-        worked_out = binaryEncodeResponse(worked_out)
-        labels &= (sleep['Worked out'].isin(worked_out))
-    return labels
-
-
 
 ################################################
 ##########      Main starts here      ##########
 ################################################
 
 
-st.title("Stress Analysis: Narrative of stress to enhance people's understanding")
+st.title("Stress Analysis: Narrative of stress that enhances people’s understanding of it")
 
 st.sidebar.title(
     "Stress Data Analysis: To have an in-depth understanding of the following questions")
 st.sidebar.markdown(
-    "This application is a Streamlit dashboard to enhances people's understanding of stress")
+    "This application is a Streamlit dashboard to enhances people’s understanding of stress")
 
-st.sidebar.header("Page navigation")
-selectplot = st.sidebar.selectbox("Select the question you want to view", [
-                                  "Introduction", "Stress & age/backgrounds", "Factors correlate with stress level", "Stress & social media"], key="0")
-# Page 0
-if selectplot == "Introduction":
-    st.markdown(
-        "Do we need an intro page to show the overall structure of our application?\n" +
-        "## Purpose of this application\n" + 
-        "In this application, we will show a general overview of stress, including the sources of stress, the factors that will" +
-        "influence people's stress level, and the relationship of stress and social media.\n" +
-        "## Overall structure\n" +
-        "There are in total four pages in this application. (Need more words here?)\n" +
-        "1. Overall introduction\n" +
-        "2. Stress & age/backgrounds\n" +
-        "3. Factors correlate with stress level\n" +
-        "4. Factors correlate with stress level\n" + 
-        "### Please proceed to page 2 to start your exploration!"
-    )
+st.sidebar.header("待填入")
+selectplot = st.sidebar.selectbox("待填入Select the question you want to view", [
+                                  "Stress & age/backgrounds", "Factors correlate with stress level", "Stress & social media"], key="0")
 
 # Page 1
 if selectplot == "Stress & age/backgrounds":
@@ -199,7 +125,7 @@ if selectplot == "Stress & age/backgrounds":
    variety of sources includes uncertain future, discrimination, etc., and the coronavirus pandemic \
    has risen as a substantial source of stress. People from different age and/or socioeconomic \
    groups may experience very different sources and symptoms of stress. In this project, we hope to bring \
-   a narrative of stress that enhances people's understanding of it.")
+   a narrative of stress that enhances people’s understanding of it.")
 
     st.subheader(
         'Q1: What are the sources and impact of stress for people from different backgrounds?')
@@ -249,14 +175,9 @@ if selectplot == "Stress & age/backgrounds":
 
 # Page 2
 elif selectplot == "Factors correlate with stress level":
-    st.markdown(
-        "In this page, we will explore several factors that can influence people's stress level.\n" +
-        "1. COVID-19's Impact on Educational Stress\n" + 
-        "2. Impact of Sleep on Stress"
-    )
-    
+
     # Stress vs sleep
-    st.subheader("2. Impact of Sleep on Stress")
+    st.subheader("Sleep")
     st.markdown("In this section, we will first delve into the relationship between sleep and stress,\
       and then focus on how to improve sleep quality inorder to reduce stress.")
     stress, sleep = load_sleep_data()
@@ -444,14 +365,10 @@ elif selectplot == "Stress & social media":
 
     if title != 'Please enter some sentences here...':
         st.write('Your input is: [', title, ']')
-        path = './data/'
-        # path = '/content/Insight_Stress_Analysis/data/'
-        train = pd.read_csv(path + 'dreaddit-train.csv', encoding="ISO-8859-1")
-        test = pd.read_csv(path + 'dreaddit-test.csv', encoding="ISO-8859-1")
-        DATA_COLUMN = 'text'
-        LABEL_COLUMN = 'label'
-        # label_list is the list of labels, i.e. True, False or 0, 1 or 'dog', 'cat'
-        label_list = [0, 1]
+
+
+
+
         select = st.selectbox("What's your age", [
             "6-17", "18-49", "50+"], key="1")
         if select == "6-17":
@@ -465,7 +382,7 @@ elif selectplot == "Stress & social media":
                 "**Diet.** We recommend kids and teens eat an abundance of vegetables, fish, nuts and eggs.")
         elif select == "18-49":
             st.markdown("#### We have some tips for you")
-            st.markdown("**Spend less time on social media.**Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
+            st.markdown("**Spend less time on social media.** Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
             st.markdown(
                 "**Manage your time..** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
             st.markdown("**Having a balanced and healthy diet.** Making simple diet changes, such as reducing your alcohol, caffeine and sugar intake.")
