@@ -101,6 +101,7 @@ def plot_pie(df, disorder):
         color=alt.Color(field="category", scale=alt.Scale(scheme='set2')), tooltip=["value"]).properties(title=title)
     st.altair_chart(c, use_container_width=True)
 
+
 ################################################
 ##########      Main starts here      ##########
 ################################################
@@ -208,14 +209,10 @@ elif selectplot == "Stress & social media":
 
     if title != 'Please enter some sentences here...':
         st.write('Your input is: [', title, ']')
-        path = './data/'
-        # path = '/content/Insight_Stress_Analysis/data/'
-        train = pd.read_csv(path + 'dreaddit-train.csv', encoding="ISO-8859-1")
-        test = pd.read_csv(path + 'dreaddit-test.csv', encoding="ISO-8859-1")
-        DATA_COLUMN = 'text'
-        LABEL_COLUMN = 'label'
-        # label_list is the list of labels, i.e. True, False or 0, 1 or 'dog', 'cat'
-        label_list = [0, 1]
+
+
+
+
         select = st.selectbox("What's your age", [
             "6-17", "18-49", "50+"], key="1")
         if select == "6-17":
@@ -229,7 +226,7 @@ elif selectplot == "Stress & social media":
                 "**Diet.** We recommend kids and teens eat an abundance of vegetables, fish, nuts and eggs.")
         elif select == "18-49":
             st.markdown("#### We have some tips for you")
-            st.markdown("**Spend less time on social media.**Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
+            st.markdown("**Spend less time on social media.** Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
             st.markdown(
                 "**Manage your time..** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
             st.markdown("**Having a balanced and healthy diet.** Making simple diet changes, such as reducing your alcohol, caffeine and sugar intake.")

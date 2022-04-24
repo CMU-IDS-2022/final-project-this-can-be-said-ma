@@ -3,3 +3,5 @@ pandas
 altair
 vega_datasets
 tensorflow==1.15.0
+bert-tensorflow==1.0.1
+pip install tensorflow-serving-api
