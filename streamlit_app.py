@@ -113,6 +113,21 @@ def plot_pie(df, disorder):
         color=alt.Color(field="category", scale=alt.Scale(scheme='set2')), tooltip=["value"]).properties(title=title)
     st.altair_chart(c, use_container_width=True)
 
+def gen_stress_sleep_chart(attrs):
+    chart_list = []
+    for attr in attrs:
+        chart_list.append(
+            alt.Chart(stress).mark_bar().encode(
+                alt.X(attr, scale=alt.Scale(
+                    zero=False), bin=alt.Bin()),
+                alt.Y("count()"),
+                alt.Color("stress level")
+            ).properties(
+                width=280,
+                height=210
+            )
+        )
+    return chart_list
 
 @st.cache
 def binaryEncodeResponse(response):
