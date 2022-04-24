@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 from PIL import Image
+import numpy as np
 
 ################################################
 ##########      Global attributes     ##########
@@ -16,6 +17,184 @@ stress_sleep_attrs = ["snoring rate", "respiration rate", "body temperature",
 ################################################
 ##########      Helper functions      ##########
 ################################################
+# huiyi
+@st.cache
+def load_educational_stress_data():
+    df_edu= pd.read_csv(
+        "data/covid_school_stress_responses.csv"
+    )
+    df_edu['Change in classwork stress'] = df_edu['Now-ClassworkStress'] - df_edu['Before-ClassworkStress']
+    df_edu['Change in homework stress'] = df_edu['Now-HomeworkStress'] - df_edu['Before-HomeworkStress']
+    df_edu['Change in homework hours'] = df_edu['Now-HomeworkHours'] - df_edu['Before-HomeworkHours']
+    return df_edu
+
+def plot_edu_dist_overview(option_g1, option_g2, option_g3, option_e1, option_e2, option_e3):
+    df_edu = load_educational_stress_data()
+    if not option_g1:
+        df_edu = df_edu[df_edu['Gender'] != 'Female']
+    if not option_g2:
+        df_edu = df_edu[df_edu['Gender'] != 'Male']
+    if not option_g3:
+        df_edu = df_edu[df_edu['Gender'] != 'Other']
+    if not option_e1:
+        df_edu = df_edu[df_edu['Before-Environment'] != 'Physical']
+    if not option_e2:
+        df_edu = df_edu[df_edu['Before-Environment'] != 'Virtual']
+    if not option_e3:
+        df_edu = df_edu[df_edu['Before-Environment'] != 'Hybrid']
+    df_classwork_melted = df_edu[['Before-ClassworkStress', 'Now-ClassworkStress']].melt(var_name='Stage',
+                                                                                         value_name='Classwork Stress')
+    df_homework_melted = df_edu[['Before-HomeworkStress', 'Now-HomeworkStress']].melt(var_name='Stage',
+                                                                                         value_name='Homework Stress')
+    edu_chart1 = alt.Chart(df_classwork_melted).mark_area(
+        opacity=0.5,
+        interpolate='step'
+    ).encode(
+        alt.X('Classwork Stress:Q', bin=alt.Bin(maxbins=100, step=0.5)),
+        alt.Y('count()', stack=None),
+        alt.Color('Stage:N')
+    ).properties(
+        title='Change in Experienced Classwork Stress'
+    )
+    edu_chart2 = alt.Chart(df_homework_melted).mark_area(
+        opacity=0.5,
+        interpolate='step'
+    ).encode(
+        alt.X('Homework Stress:Q', bin=alt.Bin(maxbins=100, step=0.5)),
+        alt.Y('count()', stack=None),
+        alt.Color('Stage:N')
+    ).properties(
+        title='Changes in Experienced Homework Stress'
+    )
+    st.altair_chart(edu_chart1, use_container_width=True)
+    st.altair_chart(edu_chart2, use_container_width=True)
+    # cur_chart = alt.vconcat(edu_chart1, edu_chart2)
+    # st.write(cur_chart)
+
+def plot_edu_age():
+    df_edu = load_educational_stress_data()
+    df_count = df_edu[[
+        'Age', 'FamilyRelationships'
+    ]].groupby('Age').count().reset_index().rename({"FamilyRelationships": "Count"}, axis=1)
+
+    df_grouped = df_edu[[
+        'Age', 'Change in classwork stress', 'Change in homework stress', 'Change in homework hours'
+    ]].groupby('Age').mean().reset_index()
+    df_grouped = df_grouped.merge(df_count, on="Age", how='left')
+
+    df_melted = df_grouped[['Age', 'Count', 'Change in classwork stress', 'Change in homework stress', 'Change in homework hours']].melt(
+        id_vars=['Age', 'Count'], value_vars=['Change in classwork stress', 'Change in homework stress', 'Change in homework hours'],
+        var_name='Stress Type', value_name='Change in Stress Level')
+
+    edu_chart1 = alt.Chart(df_melted).mark_bar().encode(
+        column=alt.Column("Age"),
+        x=alt.X('Stress Type', title="", axis=alt.Axis(labelAngle=60)),
+        y='Change in Stress Level',
+        color='Stress Type',
+        tooltip='Count'
+    ).properties(
+        title='Change in Experienced Stress Level by Age',
+        width=45,
+        height=300
+    )
+    st.altair_chart(edu_chart1)
+
+
+def plot_edu_gender():
+    df_edu = load_educational_stress_data()
+    df_count = df_edu[[
+        'Gender', 'FamilyRelationships'
+    ]].groupby('Gender').count().reset_index().rename({"FamilyRelationships": "Count"}, axis=1)
+
+    df_grouped = df_edu[[
+        'Gender', 'Change in classwork stress', 'Change in homework stress', 'Change in homework hours'
+    ]].groupby('Gender').mean().reset_index()
+    df_grouped = df_grouped.merge(df_count, on="Gender", how='left')
+    df_melted = df_grouped[['Gender', 'Count', 'Change in classwork stress', 'Change in homework stress', 'Change in homework hours']].melt(
+        id_vars=['Gender', 'Count'], value_vars=['Change in classwork stress', 'Change in homework stress', 'Change in homework hours'],
+        var_name='Stress Type', value_name='Change in Stress Level')
+
+    edu_chart1 = alt.Chart(df_melted).mark_bar().encode(
+        row=alt.Row("Gender"),
+        y=alt.Y('Stress Type', title=""),
+        x='Change in Stress Level',
+        color='Stress Type',
+        tooltip='Count'
+    ).properties(
+        title='Change in Experienced Stress Level by Gender',
+        width=300,
+        height=100
+    )
+    st.altair_chart(edu_chart1)
+
+
+def plot_edu_relationship_corr():
+    df_edu = load_educational_stress_data()
+    corrMatrix = df_edu[['Change in classwork stress', 'Change in homework stress', 'FamilyRelationships',
+                         'FriendRelationships']].corr().reset_index().melt('index')
+    corrMatrix.columns = ['var1', 'var2', 'correlation']
+    square_brush = alt.selection_single(fields=['var1', 'var2'], clear=False,
+                                  init={'var1': 'FriendRelationships', 'var2': 'FamilyRelationships'})
+    base = alt.Chart(corrMatrix).transform_filter(
+        alt.datum.var1 <= alt.datum.var2
+    ).encode(
+        x=alt.X('var1', title="Stress factor 1"),
+        y=alt.Y('var2', title="Stress factor 2"),
+    ).properties(
+        width=alt.Step(55),
+        height=alt.Step(55)
+    )
+    rects = base.mark_rect().encode(
+        color='correlation'
+    ).add_selection(square_brush)
+    
+    text = base.mark_text(
+        size=15
+    ).encode(
+        text=alt.Text('correlation', format=".2f"),
+        color=alt.condition(
+            "datum.correlation > 0.5",
+            alt.value('white'),
+            alt.value('black')
+        )
+    )
+    # st.write(rects + text)
+
+    def generate_2d(var1, var2):
+        H, xe, ye = np.histogram2d(df_edu[var1], df_edu[var2], density=True)
+        H[H == 0] = np.nan
+        xe = pd.Series(['{0:.4g}'.format(num) for num in xe])
+        xe = pd.DataFrame({"a": xe.shift(), "b": xe}).dropna().agg(' - '.join, axis=1)
+        ye = pd.Series(['{0:.4g}'.format(num) for num in ye])
+        ye = pd.DataFrame({"a": ye.shift(), "b": ye}).dropna().agg(' - '.join, axis=1)
+
+        res = pd.DataFrame(
+            H, index=ye, columns=xe
+        ).reset_index().melt(id_vars='index').rename(columns={'index': 'value2',
+                                                              'value': 'count',
+                                                              'variable': 'value'})
+        res['raw_left_value'] = res['value'].str.split(' - ').map(lambda x: x[0]).astype(float)
+        res['raw_left_value2'] = res['value2'].str.split(' - ').map(lambda x: x[0]).astype(float)
+        res['var1'] = var1
+        res['var2'] = var2
+        return res.dropna()
+
+    table_2d = pd.concat(
+        [generate_2d(var1, var2) for var1 in corrMatrix['var1'] for var2 in corrMatrix['var2']])
+    # st.write(table_2d)
+
+    scat_plot = alt.Chart(table_2d).transform_filter(
+        square_brush
+    ).mark_rect().encode(
+        alt.X('value:N', sort=alt.EncodingSortField(field='raw_left_value'), title='Selected factor 1'),
+        alt.Y('value2:N', sort=alt.EncodingSortField(field='raw_left_value2', order='descending'), title='Selected factor 2'),
+        alt.Color('count:Q', scale=alt.Scale(scheme='blues'))
+    )
+    concat = alt.hconcat((rects + text).properties(width=230, height=230),
+                        scat_plot.properties(width=230, height=230),
+                         title = 'Correlation between Changes in Stress Level and Changes in Familly & Friends Relationship').resolve_scale(color='independent')
+    st.write(concat)
+
 
 
 @st.cache  # add caching so we load the data only once
@@ -254,7 +433,48 @@ elif selectplot == "Factors correlate with stress level":
         "1. COVID-19's Impact on Educational Stress\n" + 
         "2. Impact of Sleep on Stress"
     )
-    
+
+    # huiyi
+    st.subheader("1. COVID-19's Impace on Educational Stress")
+    st.markdown("In this section, we will explore the relationship between the COVID-19 pandemic and \
+        educational stress experienced by students. Students in the age of middle school, high school, \
+        and college reported their stress level before and after the pandemic.")
+    # visualization 1: distribution overview
+    st.markdown(
+        "#### 1.1 Overall change in educational stress level\n" +
+        "Let's explore the overall distribution of change in stress level experienced by students from different groups."
+    )
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown('**Gender**')
+        option_g1 = st.checkbox('Female', value=True)
+        option_g2 = st.checkbox('Male', value=True)
+        option_g3 = st.checkbox('Other', value=True)
+    with col2:
+        st.markdown('**Before pandemic education environment**')
+        option_e1 = st.checkbox('Physical', value=True)
+        option_e2 = st.checkbox('Virtual', value=True)
+        option_e3 = st.checkbox('Hybrid', value=True)
+    plot_edu_dist_overview(option_g1, option_g2, option_g3, option_e1, option_e2, option_e3)
+
+    # visualization 2: factor=age
+    st.markdown(
+        "#### 1.2 Factors related to stress level\n" +
+        "Does there exist systematic difference in change in experienced stress level across different age and gender groups?"
+    )
+    plot_edu_age()
+
+    # visualization 3: factor=gender
+    plot_edu_gender()
+
+    # visualization 3: factor=family & friends relationship
+    st.markdown(
+        "#### 1.3 Correlation between changes in stress level and social relationships\n" +
+        "A positive family or friends relationship suggests improved relationship after the pandemic. \n" +
+        "Let's explore the correlation between them! *Click on the correlation blocks to see detailed heatmap.*\n"
+    )
+    plot_edu_relationship_corr()
+
     # Stress vs sleep
     st.subheader("2. Impact of Sleep on Stress")
     st.markdown("In this section, we will first delve into the relationship between sleep and stress,\
