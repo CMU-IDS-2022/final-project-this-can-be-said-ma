@@ -7,7 +7,7 @@ bert-tensorflow==1.0.1
 tensorflow-serving-api
 bentoml==0.6.1
 numpy
-gensim==3.0
+gensim==3.8.3
 scikit-learn
 nltk
 tqdm
