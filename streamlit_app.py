@@ -2,11 +2,26 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 from PIL import Image
+import bentoml
+import pandas as pd
+import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
+from gensim.models import Word2Vec
+import sys
+sys.path.append('script/')
+from bentoml.artifact import PickleArtifact
+from bentoml.handlers import DataframeHandler
+from data_preprocess import Posts
+from word_embedding_vectorizer import WordEmbeddingVectorizer
+from gensim.models import Word2Vec
 
 ################################################
 ##########      Global attributes     ##########
 ################################################
-
+saved_path = "/Users/zsy/Desktop/spring2022/05839/hw3/final-project-this-can-be-said-ma/bentoml/repository/WordEmbeddingModel/20220424153645_7494D6"
 stress_sleep_attrs = ["snoring rate", "respiration rate", "body temperature",
                       "limb movement", "body oxygen", "eye movement", "sleeping hours", "heart rate"]
 
@@ -157,6 +172,32 @@ def get_sleep_membership(sleep, score_range=None, coffee=None, tea=None, ate_lat
         worked_out = binaryEncodeResponse(worked_out)
         labels &= (sleep['Worked out'].isin(worked_out))
     return labels
+
+
+
+@bentoml.artifacts([PickleArtifact('word_vectorizer'),
+                    PickleArtifact('word_embedding_rf')]) 
+
+@bentoml.env(pip_dependencies=["pandas", "numpy", "gensim", "scikit-learn", "nltk"])
+
+class WordEmbeddingModel(bentoml.BentoService):
+        
+    @bentoml.api(DataframeHandler, typ='series')
+    def preprocess(self, series):
+        preprocess_series = Posts(series).preprocess()
+        input_matrix = self.artifacts.word_vectorizer.fit(preprocess_series).transform(preprocess_series)
+        return input_matrix
+    
+    @bentoml.api(DataframeHandler, typ='series')
+    def predict(self, series):
+        input_matrix = self.preprocess(series)
+        pred_labels = self.artifacts.word_embedding_rf.predict(input_matrix)
+        pred_proba = self.artifacts.word_embedding_rf.predict_proba(input_matrix)
+        confidence_score = [prob[1] for prob in pred_proba]
+        output = pd.DataFrame({'text': series, 'confidence_score': confidence_score, 'labels': pred_labels})
+        output['labels'] = output['labels'].map({1: 'stress', 0: 'non-stress'})
+        
+        return output
 
 ################################################
 ##########      Main starts here      ##########
@@ -441,36 +482,39 @@ elif selectplot == "Stress & social media":
 
     if title != 'Please enter some sentences here...':
         st.write('Your input is: [', title, ']')
-
-
-
-
-        select = st.selectbox("What's your age", [
-            "6-17", "18-49", "50+"], key="1")
-        if select == "6-17":
-            st.markdown("#### We have some tips for you")
-            st.markdown("**Sleep well.** Sleep is essential for physical and emotional well-being. For children under 12 years old, they need 9 to 12 hours of sleep a night. Teens need 8 to 10 hours a night.")
-            st.markdown(
-                "**Exercise.** Physical activity is an essential stress reliever. At least 60 minutes a day of activity for children ages 6 to 17.")
-            st.markdown("**Talk it out.** Talking about stressful situations with a trusted adult can help kids and teens put things in perspective and find solutions. Parents can help them combat negative thinking, remind them of times they worked hard and improved.")
-            st.markdown("**Get outside.** Spending time in nature is an effective way to relieve stress and improve overall well-being. Researchers have found that people who live in areas with more green space have less depression, anxiety and stress.")
-            st.markdown(
-                "**Diet.** We recommend kids and teens eat an abundance of vegetables, fish, nuts and eggs.")
-        elif select == "18-49":
-            st.markdown("#### We have some tips for you")
-            st.markdown("**Spend less time on social media.** Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
-            st.markdown(
-                "**Manage your time..** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
-            st.markdown("**Having a balanced and healthy diet.** Making simple diet changes, such as reducing your alcohol, caffeine and sugar intake.")
-            st.markdown(
-                "**Share your feelings.** A conversation with a friend lets you know that you are not the only one having a bad day, caring for a sick child or working in a busy office. Stay in touch with friends and family. Let them provide love, support and guidance. Don’t try to cope alone.")
+        stress = 0
+        # Load exported bentoML model archive from path
+        bento_model = bentoml.load(saved_path)
+        # series = "We'd be saving so much money with this new house"
+        series = pd.Series(title)
+        output = bento_model.predict(series)
+        if output["labels"].values == "stress":
+            st.markdown("##### Our model detects that you are stressed from this sentence you input")
+            select = st.selectbox("What's your age", [
+                "6-17", "18-49", "50+"], key="1")
+            if select == '6-17':
+                st.markdown("#### We have some tips for you")
+                st.markdown("**Sleep well.** Sleep is essential for physical and emotional well-being. For children under 12 years old, they need 9 to 12 hours of sleep a night. Teens need 8 to 10 hours a night.")
+                st.markdown(
+                    "**Exercise.** Physical activity is an essential stress reliever. At least 60 minutes a day of activity for children ages 6 to 17.")
+                st.markdown("**Talk it out.** Talking about stressful situations with a trusted adult can help kids and teens put things in perspective and find solutions. Parents can help them combat negative thinking, remind them of times they worked hard and improved.")
+                st.markdown("**Get outside.** Spending time in nature is an effective way to relieve stress and improve overall well-being. Researchers have found that people who live in areas with more green space have less depression, anxiety and stress.")
+                st.markdown(
+                    "**Diet.** We recommend kids and teens eat an abundance of vegetables, fish, nuts and eggs.")
+            elif select == "18-49":
+                st.markdown("#### We have some tips for you")
+                st.markdown("**Spend less time on social media.** Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
+                st.markdown(
+                    "**Manage your time..** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
+                st.markdown("**Having a balanced and healthy diet.** Making simple diet changes, such as reducing your alcohol, caffeine and sugar intake.")
+                st.markdown(
+                    "**Share your feelings.** A conversation with a friend lets you know that you are not the only one having a bad day, caring for a sick child or working in a busy office. Stay in touch with friends and family. Let them provide love, support and guidance. Don’t try to cope alone.")
+            elif select == '50+':
+                st.markdown("#### We have some tips for you")
+                st.markdown("**Regular aerobic exercise.** Taking 40-minute walks three days per week will result in a 2% increase in the size of their hippocampus, the area of the brain involved in memory and learning. In contrast, without exercise, older adults can expect to see a decrease in the size of their hippocampus by about 1-2% each year.")
+                st.markdown("**Become active within your community and cultivate warm relationships.** You can choose to volunteer at a local organization, like a youth center, food bank, or animal shelter.")
+                st.markdown("**Diet.** Recommended diets include an abundance of vegetables, fish, meat, poultry, nuts, eggs and salads. Olders should avoid sugar, overconsumption of sugar has a direct correlation to obesity, diabetes, disease and even death.")
         else:
-            st.markdown("#### We have some tips for you")
-            st.markdown("**Regular aerobic exercise.** Taking 40-minute walks three days per week will result in a 2% increase in the size of their hippocampus, the area of the brain involved in memory and learning. In contrast, without exercise, older adults can expect to see a decrease in the size of their hippocampus by about 1-2% each year.")
-            st.markdown(
-                "**Exercise.** Physical activity is an essential stress reliever. At least 60 minutes a day of activity for children ages 6 to 17.")
-            st.markdown("**Become active within your community and cultivate warm relationships.** You can choose to volunteer at a local organization, like a youth center, food bank, or animal shelter.")
-            st.markdown("**Diet.** Recommended diets include an abundance of vegetables, fish, meat, poultry, nuts, eggs and salads. Olders should avoid sugar, overconsumption of sugar has a direct correlation to obesity, diabetes, disease and even death.")
-            
+            st.markdown("#### You don't feel stressed")  
 st.markdown(
     "This project was created by Wenxing Deng, Jiuzhi Yu, Siyu Zhou and Huiyi Zhang for the [Interactive Data Science](https://dig.cmu.edu/ids2022) course at [Carnegie Mellon University](https://www.cmu.edu).")
