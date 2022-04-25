@@ -205,6 +205,7 @@ class WordEmbeddingModel(bentoml.BentoService):
 ################################################
 
 nltk.download("stopwords")
+nltk.download("wordnet")
 
 st.title("Stress Analysis: Narrative of stress to enhance people's understanding")
 
