@@ -17,6 +17,7 @@ from bentoml.handlers import DataframeHandler
 from data_preprocess import Posts
 from word_embedding_vectorizer import WordEmbeddingVectorizer
 from gensim.models import Word2Vec
+import nltk
 
 ################################################
 ##########      Global attributes     ##########
@@ -203,6 +204,7 @@ class WordEmbeddingModel(bentoml.BentoService):
 ##########      Main starts here      ##########
 ################################################
 
+nltk.download("stopwords")
 
 st.title("Stress Analysis: Narrative of stress to enhance people's understanding")
 
