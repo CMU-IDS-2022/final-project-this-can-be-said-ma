@@ -206,6 +206,7 @@ class WordEmbeddingModel(bentoml.BentoService):
 
 nltk.download("stopwords")
 nltk.download("wordnet")
+nltk.download('omw-1.4')
 
 st.title("Stress Analysis: Narrative of stress to enhance people's understanding")
 
