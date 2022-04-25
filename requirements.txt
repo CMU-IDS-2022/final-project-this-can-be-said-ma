@@ -5,3 +5,8 @@ vega_datasets
 tensorflow==1.15.0
 bert-tensorflow==1.0.1
 tensorflow-serving-api
+scikit-learn
+bentoml
+tqdm
+gensim
+nltk
