@@ -21,7 +21,7 @@ from gensim.models import Word2Vec
 ################################################
 ##########      Global attributes     ##########
 ################################################
-saved_path = "/Users/zsy/Desktop/spring2022/05839/hw3/final-project-this-can-be-said-ma/bentoml/repository/WordEmbeddingModel/20220424153645_7494D6"
+saved_path = "./bentoml/repository/WordEmbeddingModel/20220424153645_7494D6"
 stress_sleep_attrs = ["snoring rate", "respiration rate", "body temperature",
                       "limb movement", "body oxygen", "eye movement", "sleeping hours", "heart rate"]
 
