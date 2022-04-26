@@ -565,6 +565,7 @@ if selectplot == "Introduction":
 
 # Page 1
 if selectplot == "Stress sources":
+    st.sidebar.markdown("##### Mental Health Checker")
     st.markdown("Stress is defined as a reaction to mental or emotional pressure. It is probably \
    one of the commonly experienced feelings, but it might be hard to share. Stress can be caused by a \
    variety of sources includes uncertain future, discrimination, etc., and the coronavirus pandemic \
