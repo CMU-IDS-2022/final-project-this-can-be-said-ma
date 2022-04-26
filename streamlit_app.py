@@ -519,7 +519,7 @@ st.sidebar.markdown(
 
 st.sidebar.header("Page navigation")
 selectplot = st.sidebar.selectbox("Select the question you want to view", [
-                                  "Introduction", "Stress & age/backgrounds", "Factors correlate with stress level", "Stress & social media"], key="0")
+                                  "Introduction", "Stress sources", "Factors correlate with stress level", "Stress & social media"], key="0")
 # Page 0
 if selectplot == "Introduction":
     st.markdown(
@@ -532,10 +532,10 @@ if selectplot == "Introduction":
     st.markdown(
         "### Overall structure\n" +
         "We will bring a narrative of stress that enhances people’s understanding of it through the following three sections. \n" +
-        "- Stress & age/backgrounds \n" +
+        "- Stress sources \n" +
         "- Factors correlate with stress level\n" +
         "- Stress & social media\n" + 
-        "### Please proceed to page 2 to start your exploration!"
+        "### Please proceed to the next page to start your exploration!"
     )
     # st.markdown(
     #     "Do we need an intro page to show the overall structure of our application?\n" +
@@ -552,7 +552,7 @@ if selectplot == "Introduction":
     # )
 
 # Page 1
-if selectplot == "Stress & age/backgrounds":
+if selectplot == "Stress sources":
     st.markdown("Stress is defined as a reaction to mental or emotional pressure. It is probably \
    one of the commonly experienced feelings, but it might be hard to share. Stress can be caused by a \
    variety of sources includes uncertain future, discrimination, etc., and the coronavirus pandemic \
