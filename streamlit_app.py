@@ -200,6 +200,126 @@ class WordEmbeddingModel(bentoml.BentoService):
         
         return output
 
+@st.cache
+def load_covidistress_data():
+    path = 'data/COVIDiSTRESS_May_30_cleaned_final.csv'
+    df = pd.read_csv(path, encoding = "ISO-8859-1")
+    columns = ['answered_all', 'Dem_age', 'Dem_gender', 'Dem_edu', 'Dem_edu_mom', 'Dem_employment', 'Country',
+               'Dem_maritalstatus', 'Dem_dependents', 'Dem_riskgroup', 'PSS10_avg', 'SPS_avg', 'SLON3_avg']
+    df_s = df[columns]
+    df_s = df_s.dropna()
+    return df_s
+
+def plot_covid_corr_stress_slon(df, option_c1):
+    if option_c1 == "Gender": var = 'Dem_gender'
+    if option_c1 == "Education level": var = 'Dem_edu'
+    if option_c1 == "Mother\' education level": var = 'Dem_edu_mom'
+    if option_c1 == "Employment status": var = 'Dem_employment'
+    if option_c1 == "Marital status": var = 'Dem_maritalstatus'
+    if option_c1 == "Risk group": var = 'Dem_riskgroup'
+    area_selection = alt.selection_interval(empty="all")
+    corr1 = alt.Chart(df).mark_circle(size=10).encode(
+        y=alt.Y("PSS10_avg", title='Perceived stress', scale=alt.Scale(domainMin=0.5, domainMax=5.5)),
+        x=alt.X("SLON3_avg", title="Scale of loneliness", scale=alt.Scale(domainMin=0.5, domainMax=5.5)),
+        tooltip=["Dem_age", "Dem_gender", "Dem_employment", "Dem_maritalstatus"],
+        color=alt.condition(
+            area_selection, var, alt.value("lightgrey"))
+    ).add_selection(
+        area_selection
+    ).properties(
+        width=500,
+        height=400,
+        title="Correlation between stress and self-identified scale of loneliness"
+    )#.interactive()
+    hist1 = alt.Chart(df).transform_filter(
+        area_selection
+    ).transform_joinaggregate(
+    total='count(*)'
+    ).transform_calculate(
+        pct='1 / datum.total'
+    ).mark_bar().encode(
+        x=alt.X('sum(pct):Q', title='Percentage of data'),
+        y=alt.Y(var, title=option_c1),
+        color=var,
+        tooltip="count()"
+    ).properties(
+        width=500
+    )
+    st.write(corr1 & hist1)
+
+def plot_covid_corr_stress_sps(df, option_c3):
+    if option_c3 == "Gender": var = 'Dem_gender'
+    if option_c3 == "Education level": var = 'Dem_edu'
+    if option_c3 == "Mother\' education level": var = 'Dem_edu_mom'
+    if option_c3 == "Employment status": var = 'Dem_employment'
+    if option_c3 == "Marital status": var = 'Dem_maritalstatus'
+    if option_c3 == "Risk group": var = 'Dem_riskgroup'
+    area_selection = alt.selection_interval(empty="all")
+    corr1 = alt.Chart(df).mark_circle(size=10).encode(
+        y=alt.Y("PSS10_avg", title='Perceived stress', scale=alt.Scale(domainMin=0.5, domainMax=5.5)),
+        x=alt.X("SPS_avg", title="Social provision scale", scale=alt.Scale(domainMin=0.5, domainMax=6.5)),
+        tooltip=["Dem_age", "Dem_gender", "Dem_employment", "Dem_maritalstatus"],
+        color=alt.condition(
+            area_selection, var, alt.value("lightgrey"))
+    ).add_selection(
+        area_selection
+    ).properties(
+        width=500,
+        height=400,
+        title="Correlation between stress and social provision scale"
+    )  # .interactive()
+    hist1 = alt.Chart(df).transform_filter(
+        area_selection
+    ).transform_joinaggregate(
+        total='count(*)'
+    ).transform_calculate(
+        pct='1 / datum.total'
+    ).mark_bar().encode(
+        x=alt.X('sum(pct):Q', title='Percentage of data'),
+        y=alt.Y(var, title=option_c1),
+        color=var,
+        tooltip="count()"
+    ).properties(
+        width=500
+    )
+    st.write(corr1 & hist1)
+
+def plot_covid_stress(df, option_c2):
+    if option_c2 == "Gender": var = 'Dem_gender'
+    if option_c2 == "Education level": var = 'Dem_edu'
+    if option_c2 == "Mother\' education level": var = 'Dem_edu_mom'
+    if option_c2 == "Employment status": var = 'Dem_employment'
+    if option_c2 == "Marital status": var = 'Dem_maritalstatus'
+    if option_c2 == "Risk group": var = 'Dem_riskgroup'
+    df_new = df[['PSS10_avg', var]].groupby(var).mean().reset_index()
+
+    selec = alt.selection_single(fields=[var], empty='all')
+    bar1 = alt.Chart(df_new).mark_bar().encode(
+        x=alt.X('PSS10_avg', title="Perceived stress"),
+        y=var,
+        color=alt.condition(selec, var, alt.value('lightgrey')),
+        tooltip=['PSS10_avg']
+    ).properties(
+        title='Average perceived stress level for different ' + option_c2
+    ).add_selection(
+        selec
+    )
+    try:
+        df_slice = df[df[var]==selec]
+    except:
+        df_slice = df.copy()
+    hist1 = alt.Chart(df_slice).transform_filter(
+        selec
+    ).mark_area(
+        opacity=0.5,
+        interpolate='step'
+    ).encode(
+        alt.X('PSS10_avg:Q', bin=alt.Bin(maxbins=100, step=0.5), title="Perceived stress"),
+        alt.Y('count()', stack=None),
+        tooltip=['count()']
+    ).interactive()
+    st.write(bar1 & hist1)
+
 
 @st.cache
 def load_educational_stress_data():
@@ -379,6 +499,7 @@ def plot_edu_relationship_corr():
     st.write(concat)
 
 
+
         
 
 ################################################
@@ -474,17 +595,24 @@ if selectplot == "Stress & age/backgrounds":
 elif selectplot == "Factors correlate with stress level":
     st.markdown(
         "In this page, we will explore several factors that can influence people's stress level.\n" +
-        "1. COVID-19's Impact on Educational Stress\n" + 
+        "1. COVID-19's Impact on Stress\n" + 
         "2. Impact of Sleep on Stress"
     )
 
-    st.subheader("1. COVID-19's Impace on Educational Stress")
+    st.subheader("1. Impact of COVID-19 on Stress")
+    st.markdown("According to [American Psychological Association](https://www.apa.org/news/press/releases/stress/2020/report-october)\
+            , stress can be caused by a variety \
+            of sources includes uncertain future, discrimination, etc., and the coronavirus pandemic\
+            has risen as a substantial source of stress. In this section, we will explore stress caused\
+            by the COVID-19 pandemic. ")
+    # dataset 1: educational stress
+    st.markdown("#### 1.1 Educational Stress Experienced by Students")
     st.markdown("In this section, we will explore the relationship between the COVID-19 pandemic and \
-        educational stress experienced by students. Students in the age of middle school, high school, \
-        and college reported their stress level before and after the pandemic.")
-    # visualization 1: distribution overview
+            educational stress experienced by students. Students in the age of middle school, high school, \
+            and college reported their stress level before and after the pandemic.")
+    # visualization: distribution overview
     st.markdown(
-        "#### 1.1 Overall change in educational stress level\n" +
+        "##### 1.1.1 Overall change in educational stress level\n" +
         "Let's explore the overall distribution of change in stress level experienced by students from different groups."
     )
     col1, col2 = st.columns(2)
@@ -500,23 +628,57 @@ elif selectplot == "Factors correlate with stress level":
         option_e3 = st.checkbox('Hybrid', value=True)
     plot_edu_dist_overview(option_g1, option_g2, option_g3, option_e1, option_e2, option_e3)
 
-    # visualization 2: factor=age
-    st.markdown(
-        "#### 1.2 Factors related to stress level\n" +
-        "Does there exist systematic difference in change in experienced stress level across different age and gender groups?"
-    )
-    plot_edu_age()
+    # # visualization: factor=age
+    # st.markdown(
+    #     "#### 1.1.2 Factors related to stress level\n" +
+    #     "Does there exist systematic difference in change in experienced stress level across different age and gender groups?"
+    # )
+    # plot_edu_age()
+    
+    # # visualization: factor=gender
+    # plot_edu_gender()
 
-    # visualization 3: factor=gender
-    plot_edu_gender()
-
-    # visualization 3: factor=family & friends relationship
+    # visualization: factor=family & friends relationship
     st.markdown(
-        "#### 1.3 Correlation between changes in stress level and social relationships\n" +
+        "##### 1.1.2 Correlation between changes in stress level and social relationships\n" +
         "A positive family or friends relationship suggests improved relationship after the pandemic. \n" +
-        "Let's explore the correlation between them! *Click on the correlation blocks to see detailed heatmap.*\n"
+        "Let's explore the correlation between them!\n *Click on the correlation blocks to see detailed heatmap.*\n"
     )
     plot_edu_relationship_corr()
+
+    # dataset 2: COVID-19 stress
+    st.markdown("#### 1.2 Global Survey on Psychological and Behavioral Consequences of the COVID-19 Outbreak")
+    st.markdown("The COVIDiSTRESS dataset is a global survey that collects psychological and behavioural responses to \
+                the  pandemic. In this section, we will delve into the relationship between stress and the pandemic.")
+    df_covid = load_covidistress_data()
+    # visualization: preceived stress (PSS10_avg)
+    st.markdown("##### 1.2.1 Preceived stress")
+    
+    option_c2 = st.selectbox("Select the aspect to view distribution of perceived stress.",
+                             ('Employment status', 'Education level', 'Mother\' education level', 'Gender',
+                              'Marital status', 'Risk group')
+                             )
+    st.markdown("*Click on the bar of different categories to explore the difference in stress distribution*")
+    plot_covid_stress(df_covid, option_c2)
+
+    # visualization: availability of social provisions (SPS-10)
+    st.markdown("##### 1.2.2 Correlation between perceived stress and self-reported scale loneliness")
+    option_c1 = st.selectbox("Select the aspect for more details",
+                             ('Employment status', 'Education level', 'Mother\' education level', 'Gender',
+                              'Marital status', 'Risk group')
+                             )
+    st.markdown("*Select the area of interest to explore*")
+    plot_covid_corr_stress_slon(df_covid, option_c1)
+
+    # visualization: self-report scale of loneliness (SLON3_avg)
+    st.markdown("##### 1.2.3 Correlation between perceived stress and availability of social provisions ")
+    st.markdown("*Select the area of interest to explore*")
+    option_c3 = st.selectbox("Select the aspect for more details ...",
+                             ('Employment status', 'Education level', 'Mother\' education level', 'Gender',
+                              'Marital status', 'Risk group')
+                             )
+    plot_covid_corr_stress_sps(df_covid, option_c3)
+
 
 
     
