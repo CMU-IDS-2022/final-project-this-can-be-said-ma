@@ -621,6 +621,14 @@ if selectplot == "Stress sources":
 
 # Page 2
 elif selectplot == "Factors correlate with stress level":
+
+    st.sidebar.markdown(
+        "##### Dataset:\n" + 
+        "1. COVIDiSTRESS\n" + 
+        "2. COVID-19's Impact on Educational Stress\n" +
+        "3. Human Stress Detection in and through Sleep\n" +
+        "4. Personal Sleep Data from Sleep Cycle iOS App\n"
+    )
     st.markdown(
         "In this page, we will explore several factors that can influence people's stress level.\n" +
         "1. COVID-19's Impact on Stress\n" + 
