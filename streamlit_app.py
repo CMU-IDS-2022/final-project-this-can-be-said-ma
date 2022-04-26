@@ -574,7 +574,7 @@ if selectplot == "Stress sources":
    a narrative of stress that enhances people's understanding of it.")
 
     st.subheader(
-        'Q1: What are the sources and impact of stress for people from different backgrounds?')
+        'What are the sources and impact of stress for people from different backgrounds?')
     st.markdown("We will use the Kaggle dataset *Mental Health Checker* collected from a mental health survey for general analysis. \
    The survey consists of 36 questions and has 207 interviewees. Here are the 36 questions of the survey.")
     image = Image.open('img/1.png')
