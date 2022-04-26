@@ -523,18 +523,33 @@ selectplot = st.sidebar.selectbox("Select the question you want to view", [
 # Page 0
 if selectplot == "Introduction":
     st.markdown(
-        "Do we need an intro page to show the overall structure of our application?\n" +
-        "## Purpose of this application\n" + 
-        "In this application, we will show a general overview of stress, including the sources of stress, the factors that will" +
-        "influence people's stress level, and the relationship of stress and social media.\n" +
-        "## Overall structure\n" +
-        "There are in total four pages in this application. (Need more words here?)\n" +
-        "1. Overall introduction\n" +
-        "2. Stress & age/backgrounds\n" +
-        "3. Factors correlate with stress level\n" +
-        "4. Factors correlate with stress level\n" + 
+        "### Purpose of this application\n" +
+        "Stress is defined as a reaction to mental or emotional pressure. It is probably one of the commonly experienced feelings, " + 
+        "but it might be hard to share. In this application, we will show a general overview of stress, including the sources, " + 
+        "the factors that will influence people's stress level, and the relationship of stress and social media.\n"
+    )
+    st.image('img/meme.jpeg', caption='Meme on handling stress, source: https://rankedbyvotes.com/memes/memes-about-stress/')
+    st.markdown(
+        "### Overall structure\n" +
+        "We will bring a narrative of stress that enhances people’s understanding of it through the following three sections. \n" +
+        "- Stress & age/backgrounds \n" +
+        "- Factors correlate with stress level\n" +
+        "- Stress & social media\n" + 
         "### Please proceed to page 2 to start your exploration!"
     )
+    # st.markdown(
+    #     "Do we need an intro page to show the overall structure of our application?\n" +
+    #     "## Purpose of this application\n" + 
+    #     "In this application, we will show a general overview of stress, including the sources of stress, the factors that will" +
+    #     "influence people's stress level, and the relationship of stress and social media.\n" +
+    #     "## Overall structure\n" +
+    #     "There are in total four pages in this application. (Need more words here?)\n" +
+    #     "1. Overall introduction\n" +
+    #     "2. Stress & age/backgrounds\n" +
+    #     "3. Factors correlate with stress level\n" +
+    #     "4. Factors correlate with stress level\n" + 
+    #     "### Please proceed to page 2 to start your exploration!"
+    # )
 
 # Page 1
 if selectplot == "Stress & age/backgrounds":
