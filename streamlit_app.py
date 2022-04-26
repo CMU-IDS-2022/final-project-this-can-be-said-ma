@@ -630,18 +630,30 @@ elif selectplot == "Factors correlate with stress level":
         "##### 1.1.1 Overall change in educational stress level\n" +
         "Let's explore the overall distribution of change in stress level experienced by students from different groups."
     )
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown('**Gender**')
-        option_g1 = st.checkbox('Female', value=True)
-        option_g2 = st.checkbox('Male', value=True)
-        option_g3 = st.checkbox('Other', value=True)
-    with col2:
-        st.markdown('**Before pandemic education environment**')
-        option_e1 = st.checkbox('Physical', value=True)
-        option_e2 = st.checkbox('Virtual', value=True)
-        option_e3 = st.checkbox('Hybrid', value=True)
-    plot_edu_dist_overview(option_g1, option_g2, option_g3, option_e1, option_e2, option_e3)
+    # with st.form("my_form"):
+    #     st.write("Inside the form")
+    #     slider_val = st.slider("Form slider")
+    #     checkbox_val = st.checkbox("Form checkbox")
+    #
+    #     # Every form must have a submit button.
+    #     submitted = st.form_submit_button("Submit")
+    #     if submitted:
+    #         st.write("slider", slider_val, "checkbox", checkbox_val)
+    with st.form("my_form"):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown('**Gender**')
+            option_g1 = st.checkbox('Female', value=True)
+            option_g2 = st.checkbox('Male', value=True)
+            option_g3 = st.checkbox('Other', value=True)
+        with col2:
+            st.markdown('**Before pandemic education environment**')
+            option_e1 = st.checkbox('Physical', value=True)
+            option_e2 = st.checkbox('Virtual', value=True)
+            option_e3 = st.checkbox('Hybrid', value=True)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            plot_edu_dist_overview(option_g1, option_g2, option_g3, option_e1, option_e2, option_e3)
 
     # # visualization: factor=age
     # st.markdown(
