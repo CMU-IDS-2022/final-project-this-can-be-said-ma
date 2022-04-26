@@ -614,9 +614,9 @@ if selectplot == "Stress sources":
     disorder_factor = st.selectbox("Please select the mental disorder levels you want to explore further.", [
         "Panic attack", "Depression", "Anxiety", 'Stress', "No mental disorder"])
     plot_pie(mental_df, disorder_factor)
-    st.markdown("We can figure that people most of the people seek a therapy when they have panic attacks. \
-      But only a small portion of people with depression, anxiety and stress go to therapy. We want to encourage \
-      people with mental disorders seek appropriate therapy when they are not feeling very well through our project.")
+    st.markdown("We can figure out that most of the people seek therapy when they have panic attacks. \
+    But only a small portion of people with depression, anxiety and stress go to therapy. We want to \
+    encourage people with mental disorders to seek appropriate therapy when they are not feeling very well through our project.")
 
 
 # Page 2
