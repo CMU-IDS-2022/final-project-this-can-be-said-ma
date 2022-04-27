@@ -538,7 +538,7 @@ if selectplot == "Introduction":
         "### Purpose of this application\n" +
         "Stress is defined as a reaction to mental or emotional pressure. It is probably one of the commonly experienced feelings, " + 
         "but it might be hard to share. In this application, we will show a general overview of stress, including the sources, " + 
-        "the factors that will influence people's stress level, and the relationship of stress and social media.\n"
+        "the factors that will influence people's stress level, and the relationship of stress. Then you may use our application to determine your level of stress.\n"
     )
     st.image('img/meme.jpeg', caption='Meme on handling stress, source: https://rankedbyvotes.com/memes/memes-about-stress/')
     st.markdown(
@@ -546,7 +546,7 @@ if selectplot == "Introduction":
         "We will bring a narrative of stress that enhances people’s understanding of it through the following three sections. \n" +
         "- Stress sources \n" +
         "- Factors correlate with stress level\n" +
-        "- Stress & social media\n" + 
+        "- Test your stress level\n" + 
         "### Please proceed to the next page to start your exploration!"
     )
     # st.markdown(
@@ -895,23 +895,17 @@ elif selectplot == "Factors correlate with stress level":
 
 # Page 3
 elif selectplot == "Test your stress":
-    st.markdown("This is an interactive function to detect the user\'s current stress situation")
-    # image = Image.open('img/18.png')
-    # st.image(image, caption='Dataset: 3.5K total segments taken from 3K posts using Amazon Mechanical Turk')
-    # image = Image.open('img/19.png')
-    # st.image(image, caption='We have a total of 2,838 train data points and includes ten total subreddits')
-    # Did you know that what you say in your daily life or what you post on social media can tell you if you are stressed?
-    
-    st.subheader(
-        "Did you know that what you say in your daily life or what you post on social media can tell you if you are stressed?")
-    select = st.selectbox("To see which words are stressed and which aren't, keep going.", [
-                          "show stress free post words", "show stress post words"], key="1")
-    if select == "show stress free post words":
-        image = Image.open('img/20.png')
-        st.image(image, caption='Non_stress_post_words')
-    else:
-        image = Image.open('img/21.png')
-        st.image(image, caption='Stress_post_words')
+    st.markdown("Did you know that what you say in your daily life or what you post on social media can tell you if you are stressed?")
+    # st.subheader(
+        # "Did you know that what you say in your daily life or what you post on social media can tell you if you are stressed?")
+    # select = st.selectbox("To see which words are stressed and which aren't, keep going.", [
+    #                       "show stress free post words", "show stress post words"], key="1")
+    # if select == "show stress free post words":
+    #     image = Image.open('img/20.png')
+    #     st.image(image, caption='Non_stress_post_words')
+    # else:
+    #     image = Image.open('img/21.png')
+    #     st.image(image, caption='Stress_post_words')
 
     st.sidebar.markdown(
         "##### Dataset: Dreaddit: A Reddit Dataset for Stress Analysis in Social Media")
@@ -934,7 +928,6 @@ elif selectplot == "Test your stress":
             series = pd.Series(title)
             output = bento_model.predict(series)
             time.sleep(3)
-        # st.success('Done!')
         if output["labels"].values == "stress":
             st.success('Our model detects that you are STRESSED from this sentence you input')
             st.image('img/stress.jpeg',width=300)
@@ -942,9 +935,6 @@ elif selectplot == "Test your stress":
             st.markdown("#### Your Stress Level is "+str(ratio))
             st.markdown("**Higher than 0.5: detected as stress**")
             st.markdown("Equal or lower than 0.5: detected as stress free")
-            # st.markdown("##### Our model detects that you are stressed from this sentence you input")
-            # select = st.selectbox("What's your age", [
-            #     "6-17", "18-49", "50+"], key="1")
             with st.expander("Expand to see how to lessen your stress"):
                 select = st.radio(
                     "What's your age",
