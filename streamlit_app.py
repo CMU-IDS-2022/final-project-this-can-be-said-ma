@@ -962,7 +962,7 @@ elif selectplot == "Test your stress":
                 elif select=="18-49":
                     st.markdown("**Spend less time on social media.** Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
                     st.markdown(
-                        "**Manage your time..** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
+                        "**Manage your time.** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
                     st.markdown("**Having a balanced and healthy diet.** Making simple diet changes, such as reducing your alcohol, caffeine and sugar intake.")
                     st.markdown(
                         "**Share your feelings.** A conversation with a friend lets you know that you are not the only one having a bad day, caring for a sick child or working in a busy office. Stay in touch with friends and family. Let them provide love, support and guidance. Don’t try to cope alone.")
@@ -975,7 +975,7 @@ elif selectplot == "Test your stress":
             # st.balloons()
             st.image('img/dogstress.jpg',width=400)
             ratio = output["confidence_score"].values[0]
-            st.markdown("#### Your Confidence Score is "+str(ratio))
+            st.markdown("#### Your Stress Level is "+str(ratio))
             st.markdown("Higher than 0.5: DETECTED AS STRESSED")
             st.markdown("**Equal or Lower than 0.5: DETECTED AS STRESS FREE**") 
     else:
