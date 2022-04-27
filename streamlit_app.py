@@ -531,7 +531,7 @@ st.sidebar.markdown(
 
 st.sidebar.header("Page navigation")
 selectplot = st.sidebar.selectbox("Select the question you want to view", [
-                                  "Introduction", "Stress sources", "Factors correlate with stress level", "Stress & social media"], key="0")
+                                  "Introduction", "Stress sources", "Factors correlate with stress level", "Test your stress"], key="0")
 # Page 0
 if selectplot == "Introduction":
     st.markdown(
@@ -894,16 +894,19 @@ elif selectplot == "Factors correlate with stress level":
     )
 
 # Page 3
-elif selectplot == "Stress & social media":
+elif selectplot == "Test your stress":
+    st.markdown("This is an interactive function to detect the user\'s current stress situation")
+    # image = Image.open('img/18.png')
+    # st.image(image, caption='Dataset: 3.5K total segments taken from 3K posts using Amazon Mechanical Turk')
+    # image = Image.open('img/19.png')
+    # st.image(image, caption='We have a total of 2,838 train data points and includes ten total subreddits')
+    # Did you know that what you say in your daily life or what you post on social media can tell you if you are stressed?
+    
     st.subheader(
-        'Interactive function to detect the user\'s current stress situation')
-    image = Image.open('img/18.png')
-    st.image(image, caption='Dataset: 3.5K total segments taken from 3K posts using Amazon Mechanical Turk')
-    image = Image.open('img/19.png')
-    st.image(image, caption='We have a total of 2,838 train data points and includes ten total subreddits')
-    select = st.selectbox("Show word cloud plot", [
-                          "Non_stress_post_words", "Stress_post_words"], key="1")
-    if select == "Non_stress_post_words":
+        "Did you know that what you say in your daily life or what you post on social media can tell you if you are stressed?")
+    select = st.selectbox("To see which words are stressed and which aren't, keep going.", [
+                          "show stress free post words", "show stress post words"], key="1")
+    if select == "show stress free post words":
         image = Image.open('img/20.png')
         st.image(image, caption='Non_stress_post_words')
     else:
@@ -914,10 +917,13 @@ elif selectplot == "Stress & social media":
         "##### Dataset: Dreaddit: A Reddit Dataset for Stress Analysis in Social Media")
 
     st.subheader(
-        'Would you like to know your stress level? Please enter some sentences')
+        'How much stress are you under? Test it right now by typing in a sentence.')
     title = st.text_area(label='', value='Please enter some sentences here...')
+    
+    if title == "":
+        st.markdown("###### Don't write a word? you must be too stressed to type.")
 
-    if title != 'Please enter some sentences here...':
+    elif title != 'Please enter some sentences here...':
         with st.spinner('Our model is detecting your stress level...'):
             # time.sleep()
             # st.write('Your input is: [', title, ']')
@@ -931,18 +937,21 @@ elif selectplot == "Stress & social media":
         # st.success('Done!')
         if output["labels"].values == "stress":
             st.success('Our model detects that you are STRESSED from this sentence you input')
-            st.image('img/dogstress.jpg')
+            st.image('img/stress.jpeg',width=300)
             ratio = output["confidence_score"].values[0]
-            st.markdown("#### Your Confidence Score is "+str(ratio))
-            st.markdown("**Higher than 0.5:** DETECTED AS STRESSED")
-            st.markdown("**Equal or Lower than 0.5:** DETECTED AS STRESS FREE")
+            st.markdown("#### Your Stress Level is "+str(ratio))
+            st.markdown("**Higher than 0.5: detected as stress**")
+            st.markdown("Equal or lower than 0.5: detected as stress free")
             # st.markdown("##### Our model detects that you are stressed from this sentence you input")
             # select = st.selectbox("What's your age", [
             #     "6-17", "18-49", "50+"], key="1")
-            select = st.slider('How old are you?', min_value=6, max_value=100, value=20, step=1)
-            with st.expander("See tips for you"):
-                if select<=17:
-                    st.markdown("#### We have some tips for you")
+            with st.expander("Expand to see how to lessen your stress"):
+                select = st.radio(
+                    "What's your age",
+                    ( "6-17", "18-49", "50+"))
+            # select = st.slider('How old are you?', min_value=6, max_value=100, value=20, step=1)
+            # with st.expander("See tips for you"):
+                if select=="6-17":
                     st.markdown("**Sleep well.** Sleep is essential for physical and emotional well-being. For children under 12 years old, they need 9 to 12 hours of sleep a night. Teens need 8 to 10 hours a night.")
                     st.markdown(
                         "**Exercise.** Physical activity is an essential stress reliever. At least 60 minutes a day of activity for children ages 6 to 17.")
@@ -950,29 +959,26 @@ elif selectplot == "Stress & social media":
                     st.markdown("**Get outside.** Spending time in nature is an effective way to relieve stress and improve overall well-being. Researchers have found that people who live in areas with more green space have less depression, anxiety and stress.")
                     st.markdown(
                         "**Diet.** We recommend kids and teens eat an abundance of vegetables, fish, nuts and eggs.")
-                elif select<=49:
-                    st.markdown("#### We have some tips for you")
+                elif select=="18-49":
                     st.markdown("**Spend less time on social media.** Spending time on social media sites can become stressful, not only because of what we might see on them, but also because the time you are spending on social media might be best spent enjoying visiting with friends, being outside enjoying the weather or reading a great book.")
                     st.markdown(
                         "**Manage your time..** When we prioritize and organize our tasks, we create a less stressful and more enjoyable life.")
                     st.markdown("**Having a balanced and healthy diet.** Making simple diet changes, such as reducing your alcohol, caffeine and sugar intake.")
                     st.markdown(
                         "**Share your feelings.** A conversation with a friend lets you know that you are not the only one having a bad day, caring for a sick child or working in a busy office. Stay in touch with friends and family. Let them provide love, support and guidance. Don’t try to cope alone.")
-                elif select>49:
-                    st.markdown("#### We have some tips for you")
+                elif select=="50+":
                     st.markdown("**Regular aerobic exercise.** Taking 40-minute walks three days per week will result in a 2% increase in the size of their hippocampus, the area of the brain involved in memory and learning. In contrast, without exercise, older adults can expect to see a decrease in the size of their hippocampus by about 1-2% each year.")
                     st.markdown("**Become active within your community and cultivate warm relationships.** You can choose to volunteer at a local organization, like a youth center, food bank, or animal shelter.")
                     st.markdown("**Diet.** Recommended diets include an abundance of vegetables, fish, meat, poultry, nuts, eggs and salads. Olders should avoid sugar, overconsumption of sugar has a direct correlation to obesity, diabetes, disease and even death.")
         else:
             st.success('We detected from your text that your stress level is NOT high') 
             # st.balloons()
-            # st.image('img/dogrun.jpg',width=200)
+            st.image('img/dogstress.jpg',width=400)
             ratio = output["confidence_score"].values[0]
             st.markdown("#### Your Confidence Score is "+str(ratio))
-            st.markdown("**Higher than 0.5:** DETECTED AS STRESSED")
-            st.markdown("**Equal or Lower than 0.5:** DETECTED AS STRESS FREE")
-
+            st.markdown("Higher than 0.5: DETECTED AS STRESSED")
+            st.markdown("**Equal or Lower than 0.5: DETECTED AS STRESS FREE**") 
     else:
-        st.markdown("#### please input some sentences")  
+        st.markdown("")  
 st.markdown(
     "This project was created by Wenxing Deng, Jiuzhi Yu, Siyu Zhou and Huiyi Zhang for the [Interactive Data Science](https://dig.cmu.edu/ids2022) course at [Carnegie Mellon University](https://www.cmu.edu).")
