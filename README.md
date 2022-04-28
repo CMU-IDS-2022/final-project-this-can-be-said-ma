@@ -14,7 +14,7 @@ Huiyi Zhang: Analyzed an educational stress dataset and a psychological and beha
 
 Jiuzhi Yu: Analyzed the sleep vs stress dataset and also a sleep quality dataset and created visualization for them.
 
-Siyu Zhou:
+Siyu Zhou: Trained a sentiment model using the Reddit dataset to output the stress level based on sentences and visualize the output of the stress level.
 
 ## Deliverables
 
