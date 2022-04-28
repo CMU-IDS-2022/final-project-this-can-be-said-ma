@@ -9,8 +9,11 @@
 
 ## Work distribution
 Wenxing Deng: Analyze factors that may influence stress levels from a general perspective using the Kaggle dataset Mental Health Checker
+
 Huiyi Zhang:
+
 Jiuzhi Yu:
+
 Siyu Zhou:
 
 ## Deliverables
