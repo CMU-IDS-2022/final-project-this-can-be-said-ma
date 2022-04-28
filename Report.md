@@ -2,9 +2,11 @@
 
 **Project URL**: https://share.streamlit.io/cmu-ids-2022/final-project-this-can-be-said-ma/main
 
-**Video URL**: TODO
+**Video URL**: https://github.com/CMU-IDS-2022/final-project-this-can-be-said-ma/blob/main/video.mp4
 
-Short (~250 words) abstract of the concrete data science problem and how the solutions addresses the problem.
+<!-- Short (~250 words) abstract of the concrete data science problem and how the solutions addresses the problem. -->
+
+Stress gradually becomes a universal emotion nowadays. Most of us experience different levels of stress from various sources, but only very few of us know where the stress comes from and how to scientifically reduce stress. In this big data era, more and more data are being gathered to understand more about stress. Therefore, in our application, we propose to introduce stress in terms of the sources, and factors from a statiscal point of view. Furthermore, we allow users to input their daily words, such as tweets, to a machine learning model to analyze their stress levels and provide tips if necessary.
 
 ## Introduction
 Stress is defined as a physiological response to mental or emotional strain [1]. It is probably one of the commonly experienced feelings, but it can be difficult to share. Stress can be triggered by a variety of factors, including uncertainty about the future, prejudice, and so on, and the coronavirus pandemic has emerged as a significant source of stress [2]. Individuals of varying ages and socioeconomic statuses may experience a wide variety of stressors and symptoms. We hope that this project will provide a narrative about stress that will help people better understand it.
@@ -60,50 +62,116 @@ Data processing is processed with punctuation, stop words and Lemmatization remo
 
 ## Results
 We begin the project by examining the sources and effects of stress on people from diverse backgrounds. When we examine age, income level, loan, and daily time spent on social media, we discover no discernible distribution differences. However, among the remaining three factors, there are some clear distinctions between groups. As illustrated in Figure 1, younger people have a higher risk of developing mental disorders. However, the majority of young people suffer from depression rather than stress. A noteworthy finding is that a greater proportion of people between the ages of 27 and 33 experience stress than other age groups. As illustrated in Figure 2, individuals with a lower income have a greater likelihood of experiencing anxiety, depression, or stress. As illustrated in Figure 3, a greater proportion of people with sleep disorders than those without sleep disorders suffer from various types of mental disorders.
-![](img/report/final_1.png)
-{: style="text-align:center"}
-Figure 1
-![](img/report/final_2.png)
-![](img/report/final_3.png)
+<figure>
+  <img
+  src="img/report/final_1.png">
+  <figcaption>Figure 1</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_2.png">
+  <figcaption>Figure 2</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_3.png">
+  <figcaption>Figure 3</figcaption>
+</figure>
 
 Then we analyze the proportion of people who seek therapy under different mental conditions. We find that many people seek therapy when they have panic attacks. However, only a small percentage of people who suffer from depression, anxiety, or stress seek therapy, implying that many people do not place a high premium on their mental illnesses.
 
 ### Factors Correlated with Stress: Covid-19
 To address the question of how the Covid-19 pandemic affects people’s stress level and how they are related, we can use the application to explore the educational stress dataset. For example, the visualization in Figure 4(a) and 4(b) demonstrate that students, including those who have already studied in a virtual environment prior to the pandemic, experience a general increase in stress level. 
-![](img/report/final_4a.png)
-![](img/report/final_4b.png)
+<figure>
+  <img
+  src="img/report/final_4a.png">
+  <figcaption>Figure 4a</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_4b.png">
+  <figcaption>Figure 4b</figcaption>
+</figure>
 
 The majority of respondents claim that they experienced negative changes in friend relationships after the pandemic. A natural follow-up question to ask is whether it is associated with increased classwork stress. From the correlation value of -0.08 and heatmap in Figure 5, we can see that there is no strong correlation between them. 
-![](img/report/final_5.png)
+<figure>
+  <img
+  src="img/report/final_5.png">
+  <figcaption>Figure 5</figcaption>
+</figure>
 
 To illustrate how the pandemic affects different groups of people, we will look at educational background. While those with the fewest years of education (None) have a bell-shaped distribution of stress level as demonstrated in Figure 6(a), those with the highest level of education (PhD/Doctorate) have a right-skewed distribution and thus less stress overall, as shown in Figure 6(b).
-![](img/report/final_6a.png)
-![](img/report/final_6b.png)
+<figure>
+  <img
+  src="img/report/final_6a.png">
+  <figcaption>Figure 6a</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_6b.png">
+  <figcaption>Figure 6b</figcaption>
+</figure>
 
 The scatter plot of stress and social provision scale can be used to investigate the relationship of stress level and ability of social provision when other dimensions are considered. For instance, we can observe a negative correlation between stress and social provision in Figure 7(a), with unemployed accounting for less than 10% of the population. However, if we select the range of people with highest perceived stress and lowest social provision scale, as shown in Figure 7(b), the percentage of “not employed” people increased drastically to 23%. Thus, users can investigate the correlation while also taking into account other dimensions.
-![](img/report/final_7a.png)
-![](img/report/final_7b.png)
+<figure>
+  <img
+  src="img/report/final_7a.png">
+  <figcaption>Figure 7a</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_7b.png">
+  <figcaption>Figure 7b</figcaption>
+</figure>
 
 ### Factors Correlated with Stress: Quality of Sleep
 For the sleep-stress relationship. A bar chart with color-coded stress levels is shown below for each of the eight attributes. As we can see from the sleeping hours chart, the stress level decreases monotonically as the number of sleeping hours increases. This pattern holds true for the remaining seven attributes as well. The monotonicity of the graphs reveals a strong correlation between sleep quality and stress levels.
-![](img/report/final_8.png)
+<figure>
+  <img
+  src="img/report/final_8.png">
+  <figcaption>Figure 8</figcaption>
+</figure>
 
 Following that, we'd like to demonstrate the relationship between sleep quality and lifestyle/sleep attributes. This collection of charts is intended to assist users in determining how to improve their sleep quality.
 
-To begin, a summary of all the features is shown below. The first chart depicts the distribution of sleep quality across the entire population. The majority of people receive a sleep quality score between 60 and 90. As evidenced by the second chart's attribute "time in bed", individuals who sleep longer than 6 hours can achieve a reasonable level of sleep quality, at least greater than 40. However, for those who sleep less than 4 hours, sleep quality is linearly related to bedtime. The second chart demonstrates that those who sleep after 12 a.m., or even around 6 a.m., experience extremely poor sleep quality. When we select these ranges (figure TODO), we see that they still wake up around common hours, resulting in a very short period of sleep. These two characteristics contribute to extremely poor sleep quality.
+To begin, a summary of all the features is shown below in figure 9. The first chart depicts the distribution of sleep quality across the entire population. The majority of people receive a sleep quality score between 60 and 90. As evidenced by the second chart's attribute "time in bed", individuals who sleep longer than 6 hours can achieve a reasonable level of sleep quality, at least greater than 40. However, for those who sleep less than 4 hours, sleep quality is linearly related to bedtime. The second chart demonstrates that those who sleep after 12 a.m., or even around 6 a.m., experience extremely poor sleep quality. When we select these ranges (figure 10), we see that they still wake up around common hours, resulting in a very short period of sleep. These two characteristics contribute to extremely poor sleep quality.
 
-Second, users can specify the sleep quality range they wish to investigate. For instance, as illustrated in figure TODO+1, individuals may select the range 90-100. According to these charts, people typically sleep between 8 and 10 hours and go to bed between 9 and 12 a.m. The wake-up time is between 5 and 8 a.m. Their sleeping patterns are extremely "healthy" in general.
+Second, users can specify the sleep quality range they wish to investigate. For instance, as illustrated in figure 11, individuals may select the range 90-100. According to these charts, people typically sleep between 8 and 10 hours and go to bed between 9 and 12 a.m. The wake-up time is between 5 and 8 a.m. Their sleeping patterns are extremely "healthy" in general.
 
-Third, users can specify which attributes to examine. For instance, they may wish to examine the sleeping patterns of individuals who exercise regularly (figure TODO+2). The overall score is higher, and the standard deviation is also lower. Individuals who exercise regularly can maintain a fairly consistent start and end sleep time, as well as a consistent sleep time of more than 6 hours.
-![](img/report/final_9.png)
-![](img/report/final_10.png)
-![](img/report/final_11.png)
-![](img/report/final_12.png)
+Third, users can specify which attributes to examine. For instance, they may wish to examine the sleeping patterns of individuals who exercise regularly (figure 12). The overall score is higher, and the standard deviation is also lower. Individuals who exercise regularly can maintain a fairly consistent start and end sleep time, as well as a consistent sleep time of more than 6 hours.
+<figure>
+  <img
+  src="img/report/final_9.png">
+  <figcaption>Figure 9</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_10.png">
+  <figcaption>Figure 10</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_11.png">
+  <figcaption>Figure 11</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_12.png">
+  <figcaption>Figure 12</figcaption>
+</figure>
 
 ### Stress Detection
 For the stress detection section, after preprocessing the data, we obtain the word cloud plot for the training set.
-![](img/report/final_13.png)
-![](img/report/final_14.png)
+<figure>
+  <img
+  src="img/report/final_13.png">
+  <figcaption>Figure 13</figcaption>
+</figure>
+<figure>
+  <img
+  src="img/report/final_14.png">
+  <figcaption>Figure 14</figcaption>
+</figure>
 
 The word cloud plot enables us to intuitively see which words are strongly associated with stress. We believe that visualizations such as word clouds can clearly demonstrate which characteristics contribute to the system's assessment of user stress.
 
