@@ -8,8 +8,13 @@
   * szhou2@andrew.cmu.edu
 
 ## Work distribution
+Wenxing Deng: Analyze factors that may influence stress levels from a general perspective using the Kaggle dataset Mental Health Checker
 
-Update towards the end of the project.
+Huiyi Zhang:
+
+Jiuzhi Yu:
+
+Siyu Zhou:
 
 ## Deliverables
 
