@@ -60,9 +60,11 @@ Data processing is processed with punctuation, stop words and Lemmatization remo
 
 ## Results
 We begin the project by examining the sources and effects of stress on people from diverse backgrounds. When we examine age, income level, loan, and daily time spent on social media, we discover no discernible distribution differences. However, among the remaining three factors, there are some clear distinctions between groups. As illustrated in Figure 1, younger people have a higher risk of developing mental disorders. However, the majority of young people suffer from depression rather than stress. A noteworthy finding is that a greater proportion of people between the ages of 27 and 33 experience stress than other age groups. As illustrated in Figure 2, individuals with a lower income have a greater likelihood of experiencing anxiety, depression, or stress. As illustrated in Figure 3, a greater proportion of people with sleep disorders than those without sleep disorders suffer from various types of mental disorders.
-![Figure 1](img/report/final_1.png)
-![Figure 2](img/report/final_2.png)
-![Figure 3](img/report/final_3.png)
+![](img/report/final_1.png)
+{: style="text-align:center"}
+Figure 1
+![](img/report/final_2.png)
+![](img/report/final_3.png)
 
 Then we analyze the proportion of people who seek therapy under different mental conditions. We find that many people seek therapy when they have panic attacks. However, only a small percentage of people who suffer from depression, anxiety, or stress seek therapy, implying that many people do not place a high premium on their mental illnesses.
 
