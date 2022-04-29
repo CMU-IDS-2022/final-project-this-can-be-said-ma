@@ -8,7 +8,7 @@
   * szhou2@andrew.cmu.edu
 
 ## Work distribution
-Wenxing Deng: Analyzed factors that may influence stress levels from a general perspective using the Kaggle dataset Mental Health Checker
+Wenxing Deng: Analyzed factors that may influence stress levels from a general perspective using the Kaggle dataset Mental Health Checker.
 
 Huiyi Zhang: Analyzed an educational stress dataset and a psychological and behaviral dataset and created visualization to display how the Covid-19 pandemic influenced people's perceived stress. 
 
