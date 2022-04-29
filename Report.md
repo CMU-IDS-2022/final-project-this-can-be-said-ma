@@ -96,7 +96,7 @@ To address the question of how the Covid-19 pandemic affects people’s stress l
 The majority of respondents claim that they experienced negative changes in friend relationships after the pandemic. A natural follow-up question to ask is whether it is associated with increased classwork stress. From the correlation value of -0.08 and heatmap in Figure 5, we can see that there is no strong correlation between them. 
 <figure>
   <img
-  src="img/report/final_5.png">
+  src="img/report/final_5.png" width="200">
   <figcaption>Figure 5</figcaption>
 </figure>
 
