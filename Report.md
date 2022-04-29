@@ -84,43 +84,43 @@ Then we analyze the proportion of people who seek therapy under different mental
 To address the question of how the Covid-19 pandemic affects people’s stress level and how they are related, we can use the application to explore the educational stress dataset. For example, the visualization in Figure 4(a) and 4(b) demonstrate that students, including those who have already studied in a virtual environment prior to the pandemic, experience a general increase in stress level. 
 <figure>
   <img
-  src="img/report/final_4a.png">
+  src="img/report/final_4a.png" width="600">
   <figcaption>Figure 4a</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_4b.png">
+  src="img/report/final_4b.png" width="600">
   <figcaption>Figure 4b</figcaption>
 </figure>
 
 The majority of respondents claim that they experienced negative changes in friend relationships after the pandemic. A natural follow-up question to ask is whether it is associated with increased classwork stress. From the correlation value of -0.08 and heatmap in Figure 5, we can see that there is no strong correlation between them. 
 <figure>
   <img
-  src="img/report/final_5.png" width="400">
+  src="img/report/final_5.png" width="600">
   <figcaption>Figure 5</figcaption>
 </figure>
 
 To illustrate how the pandemic affects different groups of people, we will look at educational background. While those with the fewest years of education (None) have a bell-shaped distribution of stress level as demonstrated in Figure 6(a), those with the highest level of education (PhD/Doctorate) have a right-skewed distribution and thus less stress overall, as shown in Figure 6(b).
 <figure>
   <img
-  src="img/report/final_6a.png">
+  src="img/report/final_6a.png" width="600">
   <figcaption>Figure 6a</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_6b.png">
+  src="img/report/final_6b.png" width="600">
   <figcaption>Figure 6b</figcaption>
 </figure>
 
 The scatter plot of stress and social provision scale can be used to investigate the relationship of stress level and ability of social provision when other dimensions are considered. For instance, we can observe a negative correlation between stress and social provision in Figure 7(a), with unemployed accounting for less than 10% of the population. However, if we select the range of people with highest perceived stress and lowest social provision scale, as shown in Figure 7(b), the percentage of “not employed” people increased drastically to 23%. Thus, users can investigate the correlation while also taking into account other dimensions.
 <figure>
   <img
-  src="img/report/final_7a.png">
+  src="img/report/final_7a.png" width="600">
   <figcaption>Figure 7a</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_7b.png">
+  src="img/report/final_7b.png" width="600">
   <figcaption>Figure 7b</figcaption>
 </figure>
 
