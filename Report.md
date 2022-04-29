@@ -64,17 +64,17 @@ Data processing is processed with punctuation, stop words and Lemmatization remo
 We begin the project by examining the sources and effects of stress on people from diverse backgrounds. When we examine age, income level, loan, and daily time spent on social media, we discover no discernible distribution differences. However, among the remaining three factors, there are some clear distinctions between groups. As illustrated in Figure 1, younger people have a higher risk of developing mental disorders. However, the majority of young people suffer from depression rather than stress. A noteworthy finding is that a greater proportion of people between the ages of 27 and 33 experience stress than other age groups. As illustrated in Figure 2, individuals with a lower income have a greater likelihood of experiencing anxiety, depression, or stress. As illustrated in Figure 3, a greater proportion of people with sleep disorders than those without sleep disorders suffer from various types of mental disorders.
 <figure>
   <img
-  src="img/report/final_1.png">
+  src="img/report/final_1.png" width="600">
   <figcaption>Figure 1</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_2.png">
+  src="img/report/final_2.png" width="600">
   <figcaption>Figure 2</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_3.png">
+  src="img/report/final_3.png" width="600">
   <figcaption>Figure 3</figcaption>
 </figure>
 
@@ -128,7 +128,7 @@ The scatter plot of stress and social provision scale can be used to investigate
 For the sleep-stress relationship. A bar chart with color-coded stress levels is shown below for each of the eight attributes. As we can see from the sleeping hours chart, the stress level decreases monotonically as the number of sleeping hours increases. This pattern holds true for the remaining seven attributes as well. The monotonicity of the graphs reveals a strong correlation between sleep quality and stress levels.
 <figure>
   <img
-  src="img/report/final_8.png">
+  src="img/report/final_8.png" width="600">
   <figcaption>Figure 8</figcaption>
 </figure>
 
@@ -141,22 +141,22 @@ Second, users can specify the sleep quality range they wish to investigate. For 
 Third, users can specify which attributes to examine. For instance, they may wish to examine the sleeping patterns of individuals who exercise regularly (figure 12). The overall score is higher, and the standard deviation is also lower. Individuals who exercise regularly can maintain a fairly consistent start and end sleep time, as well as a consistent sleep time of more than 6 hours.
 <figure>
   <img
-  src="img/report/final_9.png">
+  src="img/report/final_9.png" width="600">
   <figcaption>Figure 9</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_10.png">
+  src="img/report/final_10.png" width="600">
   <figcaption>Figure 10</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_11.png">
+  src="img/report/final_11.png" width="600">
   <figcaption>Figure 11</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_12.png">
+  src="img/report/final_12.png" width="600">
   <figcaption>Figure 12</figcaption>
 </figure>
 
@@ -164,12 +164,12 @@ Third, users can specify which attributes to examine. For instance, they may wis
 For the stress detection section, after preprocessing the data, we obtain the word cloud plot for the training set.
 <figure>
   <img
-  src="img/report/final_13.png">
+  src="img/report/final_13.png" width="600">
   <figcaption>Figure 13</figcaption>
 </figure>
 <figure>
   <img
-  src="img/report/final_14.png">
+  src="img/report/final_14.png" width="600">
   <figcaption>Figure 14</figcaption>
 </figure>
 
